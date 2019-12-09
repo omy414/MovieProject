@@ -57,10 +57,8 @@
 		<b>통합검색 </b>
 	</h1>
 	<form action="search.do" method="get">
-	
 		<br> <br> <br> <br> <br> 
 	<span>
-	
 		<input name="searchKeyword" class="searchText" type="text"	placeholder="영화명or감독명" onsubmit="return goSearch()">
 		<button class="searchBtn" >검색go</button>
 	</span>

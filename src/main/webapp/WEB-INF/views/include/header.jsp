@@ -54,7 +54,7 @@
 
 							<li><a href="search">영화찾기</a></li>
 
-							<li class="label1" data-label1="hot"><a href="shoping-cart.html">위시리스트</a></li>
+							<li class="label1" data-label1="hot"><a href="Test">위시리스트</a></li>
 
 							<li><a href="blog.html"></a></li>
 

@@ -32,9 +32,4 @@ public class MainPageController {
 			return "Main";
 		}
 		
-		@RequestMapping(value = "/Test", method = RequestMethod.GET)
-		public String Test(Locale locale, Model model) { //로컬 ,모델
-			return "Test";
-		}
-		
 }

@@ -1,21 +1,48 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/include/header.jsp"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>MovieAce</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/fonts/linearicons-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="resources/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="resources/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/vendor/slick/slick.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/vendor/MagnificPopup/magnific-popup.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="resources/css/util.css">
+	<link rel="stylesheet" type="text/css" href="resources/css/main.css">
+<!--===============================================================================================-->
 </head>
 <body class="animsition">
+	<jsp:include page="./include/header.jsp"></jsp:include>
 <!-- -----------------------------여기까지 상단 메뉴바!! (전부 통일 '~')------------------------------------- -->
 
 
- <section class="section-slide">
+<section class="section-slide">
 		<div class="wrap-slick1 rs2-slick1">
 			<div class="slick1">
-				<div class="item-slick1 bg-overlay1" style="background-image: url(http://image2.megabox.co.kr//mop/frontbanner/2019/2E/B6AB50-4770-4D47-8EC4-62F6A33A0E3F.jpg);" data-thumb="images/thumb-02.jpg);" data-thumb="images/thumb-01.jpg" data-caption="#">
+				<div class="item-slick1 bg-overlay1" style="background-image: url(http://image2.megabox.co.kr//mop/frontbanner/2019/2E/B6AB50-4770-4D47-8EC4-62F6A33A0E3F.jpg);" data-thumb="images/thumb-02.jpg);" data-thumb="images/thumb-01.jpg" data-caption="Women’s Wear">
 					<div class="container h-full">
 						<div class="flex-col-c-m h-full p-t-100 p-b-60 respon5">
 							<div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
@@ -89,7 +116,7 @@
 			</div>
 
 		</div>
-	</section> 
+	</section>
 
 
 
@@ -97,7 +124,7 @@
 	<!--===============================================================================================-->	
 	<script src="resources/js/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
-	<!-- <script src="resources/js/animsition.min.js"></script> -->
+	<script src="resources/vendor/animsition/js/animsition.min.js"></script>
 <!--===============================================================================================-->
 	<script src="resources/vendor/bootstrap/js/popper.js"></script>
 	<script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -123,7 +150,7 @@
         $('.parallax100').parallax100();
 	</script>
 <!--===============================================================================================-->
-	<script src="resources/js/jquery.magnific-popup.min.js"></script>
+	<script src="resources/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
 	<script>
 		$('.gallery-lb').each(function() { // the containers for all your galleries
 			$(this).magnificPopup({
@@ -194,8 +221,6 @@
 	</script>
 <!--===============================================================================================-->
 	<script src="resources/js/main.js"></script>
-	
-	
 
 </body>
 </html>
