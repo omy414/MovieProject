@@ -15,7 +15,7 @@
    ERD & UseCase
   ----------------------
  1. <Strong>ERD</Strong>
-  ![Alt ERD](https://user-images.githubusercontent.com/53854831/70407058-311ac800-1a86-11ea-9786-cc0f8c774d8f.PNG)
+  ![Alt ERD](https://user-images.githubusercontent.com/53854831/70408595-12b7cb00-1a8c-11ea-8d79-bf88903541bc.PNG)
    
    스크린샷
    ------------------
