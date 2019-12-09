@@ -141,4 +141,24 @@ public class BoardDAO implements BoardMapper {
 	public void deleteReply(Integer mboard_no) {
 		SqlSession.delete("board.deleteReply", mboard_no);	
 		}
+	
+	//----------------관리자 페이지 부분----------------------------
+	@Override
+	public List<BoardVO> reportlistAll(int start, int end){
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		System.out.println(start);
+		System.out.println(end);
+
+		return SqlSession.selectList("board.reportlistAll", map);
+	}
+	
+	@Override
+	public int reportCount() {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		return SqlSession.selectOne("board.reportCount", map);
+	}
+	
 }

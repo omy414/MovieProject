@@ -52,7 +52,7 @@
 							<li><a href="home">Home</a>
 								</li>
 
-							<li><a href="Search">영화찾기</a></li>
+							<li><a href="search">영화찾기</a></li>
 
 							<li class="label1" data-label1="hot"><a href="shoping-cart.html">위시리스트</a></li>
 
@@ -72,11 +72,22 @@
 
 					<!-- Icon header -->
 					<div class="wrap-icon-header flex-w flex-r-m h-full"> <!--  검색 아이콘 -->
-						<div class="flex-c-m h-full p-r-24">
-							<div class="icon-header-item cl2 hov-cl1 trans-04 p-lr-11 js-show-modal-search">
-								<i class="zmdi zmdi-search"></i> 
+						<form name="searchForm" action="search.do" method="get" onsubmit="return goSearch()">
+							<div class="flex-c-m h-full p-r-24">
+								<!-- 검색 텍스트 -->
+								<div>
+								
+									<input name="searchKeyword" class="searchKeyword" type="text"
+										style="border-line: none; width: 300px; background-color:transparent;border-bottom: 3px solid white; color:white;"
+										placeholder="영화명or감독명" >
+																			
+								</div>
+								<!--  검색 아이콘 -->
+								<div class="icon-header-item cl2 hov-cl1 trans-04 p-lr-11">
+									<button class="zmdi zmdi-search"></button>									
+								</div>
 							</div>
-						</div>
+						</form>
 						<div class="flex-c-m h-full p-r-25 bor6"> <!-- 로그인 아이콘 -->
 							<div class="icon-header-item cl0 hov-cl1 trans-04 p-lr-11 icon-header-noti js-show-cart" data-notify="0">
 								<a href="#" class="zmdi"><img src="resources/img/Member30x30.png" alt="IMG-Login"/> <img src="resources/img/MemberLogin30x30.png" alt="IMG-Login"/></a>
@@ -214,6 +225,7 @@
 	<script src="resources/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<!--===============================================================================================-->
 	<script src="resources/js/main.js"></script>
+	<script src="resources/js/header_js.js"></script>
 <!-- -----------------------------여기까지 상단 메뉴바!! (전부 통일 '~')------------------------------------- -->
 
 

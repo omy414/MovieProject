@@ -45,4 +45,9 @@ public interface BoardMapper {
 			public void updateReply(ReplyVO vo);
 			//댓글 삭제
 			public void deleteReply(Integer mboard_no);
+			
+	//------------------신고글 관리----------------------------
+	
+	public List<BoardVO> reportlistAll(int start, int end) throws Exception;
+	public int reportCount() throws Exception;
 }

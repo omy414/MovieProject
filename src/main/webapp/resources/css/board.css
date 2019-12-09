@@ -38,6 +38,12 @@ body {
   background-color: #FDFCF0;
   height: 620px;
 }
+.boardTable-report{
+  margin-top: 10px;
+  border: 5px ridge #FAED7D;
+  background-color: #FDFCF0;
+  height: 200px;
+}
 
 .boardTable thead {
   background-color: aqua;

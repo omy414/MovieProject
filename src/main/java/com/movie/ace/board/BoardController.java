@@ -59,8 +59,27 @@ public class BoardController {
 
 	// 관리자페이지
 	@RequestMapping(value = "AdminPage", method = RequestMethod.GET)
-	public String adminPage(HttpServletRequest req, HttpServletResponse res) {
-		return "board/AdminPage";
+	public ModelAndView adminPage(@RequestParam(defaultValue = "1") int curPage) throws Exception {
+		int count = boardmapper.reportCount();
+		// 페이지 나누기
+		BoardPager boardPager = new BoardPager(count, curPage);
+		int start = boardPager.getPageBegin();
+		int end = boardPager.getPageEnd();
+
+		List<BoardVO> list = boardmapper.reportlistAll(start, end);
+		System.out.println("count: " + count);
+		System.out.println("start: " + start);
+		System.out.println("end: " + end);
+		// 데이터를 맵에 저장
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("count", count); // 레코드 갯수
+		map.put("boardPager", boardPager); // 페이지 처리
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("map", map); // 맵에 저장된 데이터를 mav에 저장
+		mav.setViewName("board/AdminPage");
+		return mav;
 	}
 
 	// 자유게시판
