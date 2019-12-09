@@ -12,6 +12,11 @@
  5. 게시판에서 필요한 글쓰기, 삭제, 수정, 댓글남기기, 이미지 올리기, 신고하기 등등 전부 구현 해놨습니다.
  6. 추가적으로 작업하는대로 업데이트 할 예정입니다.
    
+   ERD & UseCase
+  ----------------------
+ 1. <Strong>ERD</Strong>
+  ![Alt ERD](https://user-images.githubusercontent.com/53854831/70407058-311ac800-1a86-11ea-9786-cc0f8c774d8f.PNG)
+   
    스크린샷
    ------------------
   1. <Strong>메인화면</Strong>
