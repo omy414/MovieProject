@@ -24,7 +24,7 @@ public class ReplyController {
 	public void mboard_like(@ModelAttribute BoardVO vo, HttpSession session) throws Exception {
 		String member_id = (String) session.getAttribute("1");
 		vo.setMember_id(member_id);
-		boardmapper.mboard_like(vo);
+		boardmapper.mboard_like(vo, session);
 	}
 	
 	

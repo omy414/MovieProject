@@ -28,7 +28,7 @@ public class BoardController {
 	// 게시판 보기
 	@RequestMapping("Movieboard")
 	public ModelAndView list(@RequestParam(defaultValue = "all") String searchOption,
-			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int curPage)
+			@RequestParam(defaultValue = "") String keyword, @RequestParam(defaultValue = "1") int curPage, BoardVO vo)
 			throws Exception {
 
 		System.out.println(keyword);
@@ -37,18 +37,26 @@ public class BoardController {
 		BoardPager boardPager = new BoardPager(count, curPage);
 		int start = boardPager.getPageBegin();
 		int end = boardPager.getPageEnd();
+		String mboard_header = "공지";
 
-		List<BoardVO> list = boardmapper.listAll(start, end, searchOption, keyword);
-		System.out.println("count: " + count);
-		System.out.println("start: " + start);
-		System.out.println("end: " + end);
 		// 데이터를 맵에 저장
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("list", list);
-		map.put("count", count); // 레코드 갯수
-		map.put("searchOption", searchOption);// 검색옵션
-		map.put("keyword", keyword); // 검색 키워드
-		map.put("boardPager", boardPager); // 페이지 처리
+		
+		//공지전용 리스트
+			List<BoardVO> noticelist = boardmapper.noticeAll();
+			map.put("noticelist", noticelist);
+		
+		//일반 글 리스트
+			List<BoardVO> list = boardmapper.listAll(start, end, searchOption, keyword);
+			
+			map.put("list", list);
+			map.put("count", count); // 레코드 갯수
+			map.put("searchOption", searchOption);// 검색옵션
+			map.put("keyword", keyword); // 검색 키워드
+			map.put("boardPager", boardPager); // 페이지 처리
+		
+		
+		
 		System.out.println(keyword);
 
 		ModelAndView mav = new ModelAndView();
@@ -105,6 +113,20 @@ public class BoardController {
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
 	public String insert(@ModelAttribute BoardVO vo) throws Exception {
 		boardmapper.create(vo);
+		
+		String board_sort = vo.getBoard_sort();
+		if(board_sort.equals("영화게시판")) {
+			return "redirect:Movieboard";			
+		}
+		else if(board_sort.equals("자유게시판")) {
+			return "redirect:Freeboard";			
+		}
+		else if(board_sort.equals("문의게시판")) {
+			return "redirect:QnAboard";			
+		}
+		else if(board_sort.equals("공지사항")) {
+			return "redirect:AdminPage";			
+		}
 		return "redirect:Movieboard";
 	}
 

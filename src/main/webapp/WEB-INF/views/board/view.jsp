@@ -51,9 +51,15 @@
   });
 	
 	
+
+	//좋아요
 	$(document).ready(function(){
 			var mboard_like_cnt = "${dto.mboard_like_cnt}";
 	$(".like_btn").click(function like(){
+		 if("${sessionScope.like_current_time}"-"${session
+			 Scope.like_update_time}">5*1000){
+			alert("추천은 하루에 한번밖에 안돼");
+		}else{ 
 			var mboard_no="${dto.mboard_no}";
 			var param="&mboard_no="+mboard_no;
 			$.ajax({
@@ -65,6 +71,7 @@
 	    			$("#like_btn").text(mboard_like_cnt);
 	    		}
 	    	});
+		}
     	});
 	});
     	

@@ -74,9 +74,16 @@
     	var header = $("#mboard_header");
     	var target = document.getElementById("header_select");
     	var target2 = target.options[target.selectedIndex].text;
-
+    	
     	header.val(target2);
     }
+	function bbsHeader(){
+		var board_sort = $("#board_sort");
+    	var target = document.getElementById("bbs_select");
+    	var target2 = target.options[target.selectedIndex].text;
+
+    	board_sort.val(target2);
+	}
 </script>
 
 
@@ -91,7 +98,7 @@
   padding-top: 10px;
 }
 
-.notice_select {
+#bbs_select {
   height: 25px;
   width: 200px;
   font-size: 15px;
@@ -115,11 +122,16 @@
 <body>
 	<div class="container">
 		<form method="post" action="/insert">
-		<select class="notice_select">
+		<input id="board_sort" name="board_sort" type="hidden"/>
+		<select id="bbs_select" onchange="bbsHeader()">
 			<option value="MovieBoard">영화게시판</option>
 			<option value="FreeBoard">자유게시판</option>
 			<option value="QnABoard">문의게시판</option>
-		</select> 
+		<%-- <c:if test="true">
+			<option value="notice">공지사항</option>
+		</c:if> --%> 
+		</select>
+		<c:if test="true"> <!-- 일반 회원 세션 -->
 		<input id="mboard_header" name="mboard_header" type="hidden"/> 
 		<select id="header_select" onchange="header()">
 			<option value="장르선택">[장르선택]</option>
@@ -136,7 +148,15 @@
 			<option value="SF">[SF]</option>
 			<option value="애니메이션">[애니메이션]</option>
 		</select>
-		<input class="member_no" name="member_no" type="hidden" value="3" />
+		</c:if>
+		<c:if test="false"> <!-- 게시판 관리자 세션 들어가야함 -->
+		<input id="mboard_header" name="mboard_header" type="hidden"/> 
+		<select id="header_select" onchange="header()">
+			<option value="장르선택">[말머리선택]</option>
+			<option value="공지">공지</option>
+		</select>
+		</c:if>
+		<input class="member_no" name="member_no" type="hidden" value="1" />
 		<input class="mboard_title" name="mboard_title" type="text" placeholder="제목을 입력해주세요" />
 		<textarea id="summernote"  name="mboard_content"></textarea>
 		<div style="text-align: center;">

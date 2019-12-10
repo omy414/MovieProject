@@ -15,9 +15,24 @@
     MovieBoard.mboard_content,MovieBoard.mboard_header,MovieBoard.moviecd,MovieBoard.mboard_hit_cnt,MovieBoard.mboard_like_cnt,MovieBoard.mboard_dislike_cnt,MovieBoard.mboard_reg_date,MovieBoard.member_no,MovieBoard.mboard_report_cnt,
     Member.member_id FROM MovieBoard inner join Member on
     MovieBoard.member_no = Member.member_no, (select @rownum:=0)Tmp
+    where MovieBoard.mboard_header !="공지"
     <include refid="search"></include>
     ORDER BY mboard_no desc, mboard_reg_date desc
     <include refid="pagingFooter"></include>
+  </select>
+
+  <!-- 공지글 목록 -->
+  <select id="noticeAll" resultType="com.movie.ace.board.BoardVO">
+    select rownum as rn, A.*from(
+    SELECT @rownum:=@rownum+1 rownum,(
+    SELECT COUNT(*) FROM MovieReply where mboard_no=MovieBoard.mboard_no
+    ) as mboard_reply_cnt, MovieBoard.mboard_no, MovieBoard.mboard_title,
+    MovieBoard.mboard_content,MovieBoard.mboard_header,MovieBoard.moviecd,MovieBoard.mboard_hit_cnt,MovieBoard.mboard_like_cnt,MovieBoard.mboard_dislike_cnt,MovieBoard.mboard_reg_date,MovieBoard.member_no,MovieBoard.mboard_report_cnt,
+    Member.member_id FROM MovieBoard inner join Member on
+    MovieBoard.member_no = Member.member_no, (select @rownum:=0)Tmp
+    where MovieBoard.mboard_header ="공지"
+    ORDER BY mboard_no desc, mboard_reg_date desc
+    ) A
   </select>
 
 
@@ -31,16 +46,16 @@
   <sql id="search">
     <choose>
       <when test="searchOption == 'all'">
-        where
-        member_id like '%'"${keyword}"'%'
+        and
+        (member_id like '%'"${keyword}"'%'
         OR
         mboard_content like
         '%'"${keyword}"'%'
         OR mboard_title like
-        '%'"${keyword}"'%'
+        '%'"${keyword}"'%')
       </when>
       <otherwise>
-        where ${searchOption} like '%'"${keyword}"'%'
+        and (${searchOption} like '%'"${keyword}"'%')
       </otherwise>
     </choose>
   </sql>
@@ -69,6 +84,22 @@
     #{member_no}
     )
   </insert>
+
+  <!-- 공자사항 작성 -->
+  <insert id="notice_insert">
+    insert into TestBoard(
+    mboard_header,
+    mboard_title,
+    mboard_content,
+    member_no
+    )values(
+    #{mboard_header},
+    #{mboard_title},
+    #{mboard_content},
+    #{member_no}
+    )
+  </insert>
+
   <!-- 게시글 상세보기 조회 -->
   <select id="view" resultType="com.movie.ace.board.BoardVO">
     SELECT Member.member_id, B.* FROM
@@ -127,17 +158,20 @@
 
   <!-- 댓글 입력 -->
   <insert id="insertReply">
-    Insert into MovieReply(mboard_no, mreply_content, member_no)
+    Insert into MovieReply(mboard_no, mreply_content,
+    member_no)
     VALUES (#{mboard_no}, #{mreply_content}, #{member_no})
   </insert>
 
   <!-- 댓글 목록 -->
   <select id="listReply" resultType="com.movie.ace.board.ReplyVO">
-    SELECT mboard_rno, mboard_no, mreply_content, m.member_id,
+    SELECT mboard_rno, mboard_no,
+    mreply_content, m.member_id,
     r.mreply_reg_date,
     mreply_like_cnt,mreply_dislike_cnt,mreply_report_cnt from MovieReply
     r, Member m
-    where r.member_no = m.member_no and mboard_no=#{mboard_no}
+    where r.member_no = m.member_no and
+    mboard_no=#{mboard_no}
     ORDER BY mboard_rno
 
   </select>
@@ -146,7 +180,8 @@
   <select id="reportlistAll"
     resultType="com.movie.ace.board.BoardVO">
     select *from(select rownum as rn, A.*from(
-    SELECT @rownum:=@rownum+1 rownum,(
+    SELECT
+    @rownum:=@rownum+1 rownum,(
     SELECT COUNT(*) FROM MovieReply where
     mboard_no=MovieBoard.mboard_no
     ) as mboard_reply_cnt,
@@ -155,18 +190,21 @@
     Member.member_id FROM MovieBoard inner join Member on
     MovieBoard.member_no = Member.member_no, (select @rownum:=0)Tmp
     where mboard_report_cnt>0
-    ORDER BY mboard_report_cnt asc, mboard_reg_date
+    ORDER BY mboard_report_cnt asc,
+    mboard_reg_date
     desc
     ) A
     )B where rn limit 10 offset ${start};
 
   </select>
-  
+
   <!-- 신고글 갯수 -->
   <select id="reportCount" resultType="int">
-    select count(*) from MovieBoard B inner join Member M on B.member_no
-    = M.member_no where mboard_report_cnt>0
-   </select>
+    select count(*) from
+    MovieBoard B inner join Member M on B.member_no
+    = M.member_no where
+    mboard_report_cnt>0
+  </select>
 </mapper>
 
 

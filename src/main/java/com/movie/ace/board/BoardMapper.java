@@ -23,16 +23,23 @@ public interface BoardMapper {
 	public void delete(int bno) throws Exception;
 		//게시글 전체 목록
 	public List<BoardVO> listAll(int start, int end, String searchOption, String keyword) throws Exception;
+	
+		//공지사항 글
+	public List<BoardVO> noticeAll() throws Exception;
+	
 		//게시글 조회
 	public void increaseViewcnt(int bno, HttpSession session) throws Exception;
 	
 	public int countArticle(String searchOption, String keyword) throws Exception;
 	
 	//좋아요
-	public void mboard_like(BoardVO vo) throws Exception;
+	public void mboard_like(BoardVO vo, HttpSession session) throws Exception;
 	
 	//신고
 	public void mboard_report(BoardVO vo) throws Exception;
+	
+	//공지사항 입력
+	/* public void notice_insert(BoardVO vo) throws Exception; */
 		
 	
 	//--------------댓글 부분----------------------------

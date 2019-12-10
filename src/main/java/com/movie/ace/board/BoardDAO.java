@@ -37,7 +37,19 @@ public class BoardDAO implements BoardMapper {
 
 		System.out.println(mboard_title);
 		System.out.println(mboard_content);
-		SqlSession.insert("board.insert", vo);
+		String board_sort = vo.getBoard_sort();
+		
+		if(board_sort.equals("공지사항")) {
+			SqlSession.insert("board.notice_insert", vo);
+		}else if(board_sort.equals("영화게시판")) {
+			SqlSession.insert("board.insert", vo);			
+		}else if(board_sort.equals("자유게시판")) {
+			
+		}else if(board_sort.equals("문의게시판")) {
+			
+		}else {
+			SqlSession.insert("board.insert", vo);
+		}
 	}
 
 	@Override
@@ -76,7 +88,13 @@ public class BoardDAO implements BoardMapper {
 
 		return SqlSession.selectList("board.listAll", map);
 	}
-
+	//공지사항 목록
+	public List<BoardVO> noticeAll() throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		return sqlSession.selectList("board.noticeAll", map);
+	}
+	
 	@Override
 	public int countArticle(String searchOption, String keyword) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
@@ -85,6 +103,7 @@ public class BoardDAO implements BoardMapper {
 		return SqlSession.selectOne("board.countArticle", map);
 	}
 
+	//조회수 증가지연처리
 	@Override
 	public void increaseViewcnt(int bno, HttpSession session) throws Exception {
 
@@ -93,21 +112,32 @@ public class BoardDAO implements BoardMapper {
 			update_time = (Long) session.getAttribute("update_time_" + bno);
 		}
 		long current_time = System.currentTimeMillis();
-
+		
 		System.out.println("업데이트시간 : " + update_time);
 		System.out.println("최신시간 : " + current_time);
-		if (current_time - update_time > 50 * 1000) {
+		if (current_time - update_time > 5000 * 1000) {
+			SqlSession.update("board.increaseViewcnt",bno);
 			session.setAttribute("update_time_" + bno, current_time);
 		}
-
-		SqlSession.update("board.increaseViewcnt", bno);
 	}
 	
 	
 	//좋아요부분
 	@Override
-	public void mboard_like(BoardVO vo) throws Exception {
-		SqlSession.update("board.mboard_like", vo);
+	public void mboard_like(BoardVO vo, HttpSession session) throws Exception {
+		long like_update_time = 0;
+		if (session.getAttribute("like_update_time" + vo) != null) {
+			like_update_time = (Long) session.getAttribute("like_update_time" + vo);
+		}
+		long current_time = System.currentTimeMillis();
+
+		System.out.println("업데이트시간 : " + like_update_time);
+		System.out.println("최신시간 : " + current_time);
+		if (current_time - like_update_time > 5000 * 1000) {
+			 SqlSession.update("board.mboard_like", vo);
+			 session.setAttribute("like_current_time" + vo, like_update_time);
+			session.setAttribute("like_update_time"+vo, current_time);
+		}
 	}
 	
 	@Override

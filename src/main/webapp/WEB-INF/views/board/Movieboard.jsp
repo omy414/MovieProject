@@ -190,26 +190,24 @@ tbody tr{
 				</tr>
 			</thead>
 			<tbody>
-				<!-- 공지넣을곳? -->
-				<tr id="board_notice" height="63">
-					<td align="left">#459234</td>
-					<td align="left">공지</td>
-					<td width="500"><a href=""> 영화게시판에는 영화와 관련된 내용만 작성해주세요 </a></td>
-					<td align="left" width="150">관리자</td>
-					<td align="left" width="170">2019-11-11 11:11:11 <!--  원하는 날짜 형식으로 출력하기 위해 fmt태그 사용 --> <%-- <fmt:formatDate
-                value="${row.regdate}" pattern="yyyy-MM-dd HH:mm:ss" />
-            </td> --%>
-					<td width="80" align="center">4523</td>
-					<td width="80" align="center">54231</td>
-					<td width="80" align="center">0</td>
-				</tr>
-
-				<!--  게시글 -->
-				<c:if test="${map.count ==0}">
-					<tr align="center" bgcolor="#FFFFFF" height="30">
-						<td colspan="6">등록된 글이 없습니다.</td>
+				<!-- 공지넣을곳 -->
+				<c:forEach var="row" items="${map.noticelist}">
+				 	<tr id="board_notice" height="63">
+						<td align="left" >##${row.mboard_no}</td>
+						<td align="left" >${row.mboard_header}</td>
+						<td width="500" ><a href="${path}/view?mboard_no=${row.mboard_no}"> ${row.mboard_title} <c:if test="${row.mboard_reply_cnt >0 }">
+									<span style="color: red;">(${row.mboard_reply_cnt}) </span>
+								</c:if>
+						</a></td>
+						<td align="left" width="150" >${row.member_id}</td>
+						<td align="left" width="170" >
+							<!--  원하는 날짜 형식으로 출력하기 위해 fmt태그 사용 --> <fmt:formatDate value="${row.mboard_reg_date}" pattern="yyyy-MM-dd HH:mm:ss" />
+						</td>
+						<td width="80" align="center">${row.mboard_like_cnt}</td>
+						<td width="80" align="center" >${row.mboard_hit_cnt}</td>
+						<td width="80" align="center" >${row.mboard_report_cnt}</td>
 					</tr>
-				</c:if>
+				</c:forEach>
 				<c:forEach var="row" items="${map.list}">
 					<tr>
 						<td align="left" >${row.mboard_no}</td>
