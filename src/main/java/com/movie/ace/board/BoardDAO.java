@@ -126,17 +126,19 @@ public class BoardDAO implements BoardMapper {
 	@Override
 	public void mboard_like(BoardVO vo, HttpSession session) throws Exception {
 		long like_update_time = 0;
-		if (session.getAttribute("like_update_time" + vo) != null) {
-			like_update_time = (Long) session.getAttribute("like_update_time" + vo);
+		/* session.removeAttribute("like_current_time"); */
+		
+		if (session.getAttribute("like_current_time") != null) {
+			like_update_time = (Long) session.getAttribute("like_current_time");
 		}
 		long current_time = System.currentTimeMillis();
 
 		System.out.println("업데이트시간 : " + like_update_time);
 		System.out.println("최신시간 : " + current_time);
-		if (current_time - like_update_time > 5000 * 1000) {
+		System.out.println(current_time - like_update_time);
+		if (current_time - like_update_time > 360 * 1000) {
 			 SqlSession.update("board.mboard_like", vo);
-			 session.setAttribute("like_current_time" + vo, like_update_time);
-			session.setAttribute("like_update_time"+vo, current_time);
+			session.setAttribute("like_current_time", current_time);
 		}
 	}
 	

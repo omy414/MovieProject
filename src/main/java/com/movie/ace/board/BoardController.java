@@ -1,5 +1,6 @@
 package com.movie.ace.board;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.movie.ace.board.ReplyVO;
 
 @Controller
 public class BoardController {
@@ -38,7 +37,8 @@ public class BoardController {
 		int start = boardPager.getPageBegin();
 		int end = boardPager.getPageEnd();
 		String mboard_header = "공지";
-
+		
+		Date abc = vo.getMboard_reg_date();
 		// 데이터를 맵에 저장
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -50,6 +50,10 @@ public class BoardController {
 			List<BoardVO> list = boardmapper.listAll(start, end, searchOption, keyword);
 			
 			map.put("list", list);
+			for (int i = 0; i < list.size(); i++) {
+				System.out.println(list.get(i).getMboard_reg_date());
+			}
+			
 			map.put("count", count); // 레코드 갯수
 			map.put("searchOption", searchOption);// 검색옵션
 			map.put("keyword", keyword); // 검색 키워드

@@ -31,7 +31,7 @@
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <beans:property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></beans:property>
         <beans:property name="url"
-            value="jdbc:mysql://192.168.0.128:3306/movieprojectDB?useUnicode=yes&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=UTC">
+            value="jdbc:mysql://192.168.0.128:3306/movieprojectDB?useUnicode=yes&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=Asia/Seoul">
         </beans:property>
         <beans:property name="username" value="boss"></beans:property> <!-- 각자 아이디 넣어욧 -->
         <beans:property name="password" value="boss"></beans:property>

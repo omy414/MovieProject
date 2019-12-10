@@ -56,10 +56,12 @@
 	$(document).ready(function(){
 			var mboard_like_cnt = "${dto.mboard_like_cnt}";
 	$(".like_btn").click(function like(){
-		 if("${sessionScope.like_current_time}"-"${session
-			 Scope.like_update_time}">5*1000){
-			alert("추천은 하루에 한번밖에 안돼");
-		}else{ 
+		<% long current_time = System.currentTimeMillis(); %>
+		<% session.setAttribute("like_update_time", current_time); %>
+		/* alert("${sessionScope.like_current_time}");
+		var result = "${sessionScope.like_update_time}" - "${sessionScope.like_current_time}";
+		alert(result); */
+		if("${sessionScope.like_update_time}"-"${sessionScope.like_current_time}">360*1000){
 			var mboard_no="${dto.mboard_no}";
 			var param="&mboard_no="+mboard_no;
 			$.ajax({
@@ -71,7 +73,9 @@
 	    			$("#like_btn").text(mboard_like_cnt);
 	    		}
 	    	});
-		}
+		}else{ 
+			alert("추천은 한시간에 한번밖에 안돼");
+		 }
     	});
 	});
     	
@@ -118,8 +122,12 @@
     
     $(document).ready(function(){
     	$(".siren").click(function like(){
-    	var t = confirm("정말 신고하시겠습니까");
-    	if(t){
+    	var header = "${dto.mboard_header}";
+    	if(header == "공지"){
+    		alert("공지는 신고 안돼 ㅡㅡ");
+    	}else{
+    		var t = confirm("정말 신고하시겠습니까");
+    		if(t){
     			var mboard_no="${dto.mboard_no}"
     			var param="&mboard_no="+mboard_no;
     			$.ajax({
@@ -130,6 +138,7 @@
     	    			location.href="${path}/view?mboard_no=${dto.mboard_no}";
     	    		}
     	    	});
+    			}
     		}
         	});
     	});
@@ -302,5 +311,4 @@ a:hover {
 	</div>
 	
 </body>
-
 </html>
