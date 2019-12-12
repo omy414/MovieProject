@@ -21,19 +21,25 @@
 		}
 	});
 	
+	/* 스프링시큐리티 보안에 관한 토큰 */
+	var csrfHeaderName ="${_csrf.headerName}";
+	var csrfTokenValue = "${_csrf.token}";
+	
+	
 	$(document).ready(function(){
 			listReply2();
-			
-			
-			
+
     $("#btnComments").click(function(){
     	var mreply_content = $("#mreply_content").val();
-    	var member_no = 1;
+    	var member_no = "${userInfo.member_no}";
     	var mboard_no="${dto.mboard_no}"
     	var param="mreply_content="+mreply_content+"&mboard_no="+mboard_no+"&member_no="+member_no;
     	
     	$.ajax({
     		type: "post",
+    		beforeSend: function(xhr){
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			},
     		url: "${path}/reply/insertReply",
     		data: param,
     		success: function(){
@@ -44,8 +50,8 @@
     });
     
   	
-    $("#btnUpdate").click(function(){
-      location.href="change";
+    $(".changego").click(function(){
+      location.href="${path}/change?mboard_no=${dto.mboard_no}";
     });
     
   });
@@ -61,11 +67,17 @@
 		/* alert("${sessionScope.like_current_time}");
 		var result = "${sessionScope.like_update_time}" - "${sessionScope.like_current_time}";
 		alert(result); */
-		if("${sessionScope.like_update_time}"-"${sessionScope.like_current_time}">360*1000){
+		
+		if("${userInfo.member_no}" == ''){
+			alert("로그인후에 가능합니다.");
+		}else if("${sessionScope.like_update_time}"-"${sessionScope.like_current_time}">360*1000){
 			var mboard_no="${dto.mboard_no}";
 			var param="&mboard_no="+mboard_no;
 			$.ajax({
 	    		type: "post",
+	    		beforeSend: function(xhr){
+					xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				},
 	    		url: "${path}/reply/mboard_like",
 	    		data: param,
 	    		success: function(){
@@ -123,8 +135,11 @@
     $(document).ready(function(){
     	$(".siren").click(function like(){
     	var header = "${dto.mboard_header}";
+    	var member_no = "${userInfo.member_no}";
     	if(header == "공지"){
     		alert("공지는 신고 안돼 ㅡㅡ");
+    	}else if(member_no == ''){
+    		alert("로그인이 필요한 서비스입니다.");
     	}else{
     		var t = confirm("정말 신고하시겠습니까");
     		if(t){
@@ -132,6 +147,9 @@
     			var param="&mboard_no="+mboard_no;
     			$.ajax({
     	    		type: "post",
+    	    		beforeSend: function(xhr){
+    					xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+    				},
     	    		url: "${path}/reply/mboard_report",
     	    		data: param,
     	    		success: function(){
@@ -185,7 +203,7 @@ body {
   float: left;
   background-color: red;
 }
-.writego {
+.changego {
   float: left;
 }
 
@@ -277,13 +295,22 @@ a:hover {
 					<td class="memo" width="407" colspan="2" height="200">${dto.mboard_content}</td>
 				</tr>
 
-
 				<tr align="center">
-					<td colspan="2" width="399"><input type=button class="btn btn-primary writego" value="글쓰기" OnClick="location.href='write'"> <input type="hidden" name="bno" value="${dto.mboard_no}">
-					<%-- <c:if test="${dto.member_id == 1"> --%>
+					<c:if test="${userInfo.member_no == dto.member_no}">
+					<td colspan="2" width="399"><input type=button class="btn btn-primary changego" value="수정" Onclick="location.href='${path}/change?mboard_no=${dto.mboard_no}'"> 
         			<input type=button class="btn delete" value="삭제" Onclick="delete2()">
-      				<%-- </c:if>  --%>
 					<input type=button class="btn btn-primary listgo" value="목록" OnClick="location.href='Movieboard'"> 
+      				</c:if>
+      				<c:if test="${userInfo.member_no == null}">
+					<td colspan="2" width="399"><input type=hidden class="btn btn-primary changego" value="수정" Onclick="location.href='${path}/change?mboard_no=${dto.mboard_no}'">
+        			<input type=hidden class="btn delete" value="삭제" Onclick="delete2()">
+					<input type=button class="btn btn-primary listgo" value="목록" OnClick="location.href='Movieboard'"> 
+      				</c:if>
+      				<c:if test="${userInfo.member_no != null and userInfo.member_no != dto.member_no}">
+					<td colspan="2" width="399"><input type=hidden class="btn btn-primary changego" value="수정" Onclick="location.href='${path}/change?mboard_no=${dto.mboard_no}'">
+        			<input type=hidden class="btn delete" value="삭제" Onclick="delete2()">
+					<input type=button class="btn btn-primary listgo" value="목록" OnClick="location.href='Movieboard'"> 
+      				</c:if>
 					<%-- <c:if test="${dto.userId == sessionScope.userId}">
         			<input type=button class="btn btn-primary Rbtnmargin" value="수정" Onclick="location.href='${path}/change?bno=${dto.bno}'">
       						</c:if> --%>
@@ -303,9 +330,14 @@ a:hover {
 		<div class=comments align="center">
 			<div id="listReply"></div>
 			<div style="width: 850px; padding-top: 30;">
-			<textarea style="width: 100%;" rows="5" cols="80" name="mreply_content" id="mreply_content" placeholder="댓글을 입력하세요" ></textarea>
-				<br>
-				<button type="button" id="btnComments" class="btn btn-info">댓글 작성</button>
+				<c:if test="${userInfo.member_no == null}">
+    				<textarea style="width: 100%;" rows="5 cols="80" name="replytext" id="replylogin" placeholder="로그인이 필요합니다." readonly></textarea>
+    			</c:if>
+    			<c:if test="${userInfo.member_no != null}">
+    				<textarea style="width: 100%;" rows="5 cols="80" name="mreply_content" id="mreply_content" placeholder="댓글을 입력하세요" ></textarea>
+      				<br>
+    				<button type="button" id="btnComments" class="btn btn-info">댓글 작성</button>
+    			</c:if>
 			</div>
 		</div>
 	</div>

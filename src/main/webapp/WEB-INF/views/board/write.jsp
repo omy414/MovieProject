@@ -156,13 +156,14 @@
 			<option value="공지">공지</option>
 		</select>
 		</c:if>
-		<input class="member_no" name="member_no" type="hidden" value="1" />
+		<input class="member_no" name="member_no" type="hidden" value="${userInfo.member_no}" />
 		<input class="mboard_title" name="mboard_title" type="text" placeholder="제목을 입력해주세요" />
 		<textarea id="summernote"  name="mboard_content"></textarea>
 		<div style="text-align: center;">
 			<button type="button" class="btn btn-primary RbtSave" id="btnSave" onclick="goWrite(this.form)">확인</button>
 			<button type="reset" class="btn btn-danger RbtReset" id="btnreset" onClick="history.go(-1)">취소</button>
 		</div>
+		<input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}" />
 		</form>
 	</div>
 

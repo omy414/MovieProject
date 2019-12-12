@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="member">
+	 <select id="selectByEmail" resultType="com.movie.ace.member.MemberVO">
+        <![CDATA[
+          SELECT
+              member_email,
+              member_name
+          FROM
+              Member
+          WHERE
+              member_email = #{email}       
+      ]]>
+    </select>
+    
+    <select id="selectById" resultType="com.movie.ace.member.MemberVO">
+        <![CDATA[
+          SELECT
+              member_email,
+              member_name
+          FROM
+              Member
+          WHERE
+              member_id = #{id}       
+      ]]>
+    </select>
+    
+    <select id="loginCheck" resultType="com.movie.ace.member.CustomUserDetails">
+    	<![CDATA[ 
+          select M.*, A.authority from Member M inner join authorities A on M.member_no = A.member_no where M.member_id= #{id};
+      ]]>
+    </select>
+    
+    <select id="idCheck" resultType="Integer">
+    	<![CDATA[
+    		SELECT COUNT(*) FROM Member WHERE member_id = #{id}
+    	]]>
+    </select>
+    
+    <select id="noCheck" resultType="com.movie.ace.member.MemberVO">
+    	<![CDATA[
+    		select member_no from Member where member_no = (select max(member_no) from Member)
+    	]]>
+    </select>
+    
+    <insert id="register">
+        <![CDATA[
+            INSERT INTO Member
+            (
+            	member_no,
+            	member_id,
+                member_pw,
+                member_email,
+                member_name,
+                member_birth,
+                genres,
+                postcode,
+                address,
+                detailaddress,
+                extraaddress,
+                reg_date
+            )
+            VALUES
+            (	
+            	#{member_no},
+            	#{id},
+            	#{pw},
+                #{email},
+                #{name},
+                #{birth},
+                #{genres},
+                #{postcode},
+                #{address},
+                #{detailAddress},
+                #{extraAddress},
+                SYSDATE()
+            )
+        ]]>
+    </insert>
+    
+    <insert id="authority">
+     insert into authorities
+            (
+            	member_no
+            )
+            values
+            (
+            	#{member_no}
+            )
+    </insert>
+
+</mapper>

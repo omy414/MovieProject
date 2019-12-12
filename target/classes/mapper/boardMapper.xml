@@ -122,13 +122,14 @@
     #{mboard_no}
   </update>
   <!-- 게시글 수정처리 -->
-  <update id="updateArticle">
+  <update id="update">
     UPDATE MovieBoard SET
-    title = #{title},
-    content=#{content},
-    userId = #{userId}
-    WHERE bno = #{bno}
+    mboard_header = #{mboard_header},
+    mboard_title=#{mboard_title},
+    mboard_content = #{mboard_content}
+    WHERE mboard_no = #{mboard_no}
   </update>
+ 
   <!-- 게시글 삭제처리 -->
   <delete id="deleteArticle">
     DELETE FROM MovieBoard
@@ -190,9 +191,7 @@
     Member.member_id FROM MovieBoard inner join Member on
     MovieBoard.member_no = Member.member_no, (select @rownum:=0)Tmp
     where mboard_report_cnt>0
-    ORDER BY mboard_report_cnt asc,
-    mboard_reg_date
-    desc
+    ORDER BY mboard_report_cnt desc
     ) A
     )B where rn limit 10 offset ${start};
 

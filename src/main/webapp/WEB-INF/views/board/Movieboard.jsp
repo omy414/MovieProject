@@ -128,7 +128,7 @@ tbody tr{
 
 #board_notice {
   background-color: #CEFBC9;
-  height: 55px;
+  height: 45px;
   font-size: 16px;
   font-weight: bolder;
 }
@@ -136,11 +136,13 @@ tbody tr{
 #like, #hit, #report {
   text-align: center;
 }
-
+.formcon{
+  height: 500px;
+}
 .formcon_sel {
   width: 200px;
   float: left;
-  margin-left: 340px;
+  margin-left: 240px;
 }
 
 .formcon_key {
@@ -192,7 +194,7 @@ tbody tr{
 			<tbody>
 				<!-- 공지넣을곳 -->
 				<c:forEach var="row" items="${map.noticelist}">
-				 	<tr id="board_notice" height="63">
+				 	<tr id="board_notice" height="50">
 						<td align="left" >##${row.mboard_no}</td>
 						<td align="left" >${row.mboard_header}</td>
 						<td width="500" ><a href="${path}/view?mboard_no=${row.mboard_no}"> ${row.mboard_title} <c:if test="${row.mboard_reply_cnt >0 }">
@@ -200,7 +202,7 @@ tbody tr{
 								</c:if>
 						</a></td>
 						<td align="left" width="150" >${row.member_id}</td>
-						<td align="left" width="170" >
+						<td align="left" width="190" >
 							<!--  원하는 날짜 형식으로 출력하기 위해 fmt태그 사용 --> <fmt:formatDate value="${row.mboard_reg_date}" pattern="yyyy-MM-dd HH:mm:ss" />
 						</td>
 						<td width="80" align="center">${row.mboard_like_cnt}</td>
@@ -217,7 +219,7 @@ tbody tr{
 								</c:if>
 						</a></td>
 						<td align="left" width="150" >${row.member_id}</td>
-						<td align="left" width="170" >
+						<td align="left" width="190" >
 							<!--  원하는 날짜 형식으로 출력하기 위해 fmt태그 사용 --> <fmt:formatDate value="${row.mboard_reg_date}" pattern="yyyy-MM-dd HH:mm:ss" />
 						</td>
 						<td width="80" align="center">${row.mboard_like_cnt}</td>
@@ -229,7 +231,9 @@ tbody tr{
 		</table>
 
 		<div class="text-center">
+			<c:if test="${userInfo.member_no != null}">
 			<button class="btn btn-primary Rbtnmargin" type="button">글쓰기</button>
+			</c:if>
 			<ul class="pagination justify-content-center">
 				<li class="page-item">
 					<%-- <c:if test="${map.boardPager.curBlock > 1 }"> 처음으로 가는 코드 --%> <a class="page-link" href="javascript:list('1')" aria-label="previous"> <span aria-hidden="true">&laquo;</span> <span class="sr-only">previous</span>
@@ -257,7 +261,7 @@ tbody tr{
 		</div>
 		<div class="formcon">
 			<form name="form" method="post" action="${path}/Movieboard">
-				<select class="form-control formcon_sel" name="searchOption">
+				<select class="form-control formcon_sel" name="searchOption" style="height: 35px;">
 					<option value="all" <c:out value="${map.searchOption == 'all'?'selected':''}"/>>제목+이름+내용</option>
 					<option value="member_id" <c:out value="${map.searchOption == 'member_id'?'selected':''}"/>>이름</option>
 					<option value="mboard_content" <c:out value ="${map.searchOption == 'mboard_content'?'selected':''}"/>>내용</option>

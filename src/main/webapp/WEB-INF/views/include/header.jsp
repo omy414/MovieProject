@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,6 +38,15 @@
 	<link rel="stylesheet" type="text/css" href="resources/css/main.css">
 <!--===============================================================================================-->
 </head>
+<%
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	Object principal = auth.getPrincipal();
+	
+	String name="";
+	if(principal != null){
+		name = auth.getName();
+	}
+%>
 <body class="animsition">
 	<!-- Header -->
 	<header class="header-v3">
@@ -49,13 +62,13 @@
 					<!-- Menu desktop -->
 					<div class="menu-desktop">
 						<ul class="main-menu">
-							<li><a href="home">Home</a>
+							<li><a href="/">Home</a>
 								</li>
 
 							<li><a href="search">영화찾기</a></li>
 
 							<li class="label1" data-label1="hot"><a href="Test">위시리스트</a></li>
-
+ 
 							<li><a href="blog.html"></a></li>
 
 							<li><a href="Movieboard">게시판</a>
@@ -131,9 +144,9 @@
 		<!-- Menu Mobile -->
 		<div class="menu-mobile">
 			<ul class="main-menu-m">
-				<li><a href="home">Home</a></li>
-				<li><a href="product.html">영화찾기</a></li>
-				<li><a href="shoping-cart.html" class="label1 rs1" data-label1="hot">위시리스트</a></li>
+				<li><a href="/">Home</a></li>
+				<li><a href="search">영화찾기</a></li>
+				<li class="label1" data-label1="hot"><a href="Test">위시리스트</a></li>
 				<li><a href="Movieboard">게시판</a>
 				<ul class="sub-menu-m">
 						<li><a href="Movieboard">영화 게시판</a></li>
@@ -142,9 +155,7 @@
 					</ul> <span class="arrow-main-menu-m"> <i class="fa fa-angle-right" aria-hidden="true"></i>
 				</span></li>
 
-				<li><a href="about.html">미정</a></li>
-
-				<li><a href="contact.html">미정</a></li>
+				<li><a href="AdminPage">미정</a></li>
 			</ul>
 		</div>
 	</header>
@@ -163,7 +174,7 @@
 
 			<div class="sidebar-content flex-w w-full p-lr-65 js-pscroll">
 				<ul class="sidebar-link w-full">
-					<li class="p-b-13"><a href="home" class="stext-102 cl2 hov-cl1 trans-04"> Home </a></li>
+					<li class="p-b-13"><a href="/" class="stext-102 cl2 hov-cl1 trans-04"> Home </a></li>
 
 					<li class="p-b-13"><a href="#" class="stext-102 cl2 hov-cl1 trans-04"> My Wishlist </a></li>
 
@@ -189,15 +200,22 @@
 		</div>
 	</aside>
 
-
 	<!-- MY Info -->
 	<div class="wrap-header-cart js-panel-cart">
 		<div class="s-full js-hide-cart"></div>
 
 		<div class="header-cart flex-col-l p-l-65 p-r-25">
 			<div class="header-cart-title flex-w flex-sb-m p-b-8">
-				<span class="mtext-103 cl2"> 내정보 </span>
-
+				<sec:authorize access="isAuthenticated()">
+					<span class="mtext-103 cl2">
+						<%=name %>
+					</span>
+				</sec:authorize>
+				<sec:authorize access="isAnonymous()">
+					<span class="mtext-103 cl2">
+						Guest 
+					</span>
+				</sec:authorize>
 				<div class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart">
 					<i class="zmdi zmdi-close"></i>
 				</div>
@@ -207,15 +225,38 @@
 
 
 				<div class="w-full">
-					<div class="header-cart-buttons flex-w w-full">
-						<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"> 내정보수정 </a> <a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10"> 로그아웃</a>
-					</div>
+					<sec:authorize access="isAuthenticated()">
+						<div class="header-cart-buttons flex-w w-full">
+							<a href="/modifyMyinfo" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"> 내정보수정 </a>
+							<form action="/logout" method="POST">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								<button type="submit" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">로그아웃</button>
+							</form>
+						</div>
+					</sec:authorize>
+					<sec:authorize access="isAnonymous()">
+						<div class="header-cart-buttons flex-w w-full">
+							<a href="loginModalPage" data-target="#modal-testNew" role="button" data-toggle="modal" data-bmdWidth="640" data-bmdHeight="480" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"> 로그인 </a>
+							<!-- <a href="/loginPage" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"> 로그인 </a> -->
+							<a href="/signUp" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10"> 회원가입 </a>
+						</div>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
+	
+	<div id="modal-testNew" class="modal fade" tabindex="-1" role="dialog" style="margin-top: 50px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!-- 노란선이지만 여기에있어야 잘 작동됨 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+ 
 	<!--===============================================================================================-->
 	<script src="resources/js/jquery-3.2.1.min.js"></script> <!-- 제이쿼리 입니다 꼭 필요 -->
 	<!--===============================================================================================-->

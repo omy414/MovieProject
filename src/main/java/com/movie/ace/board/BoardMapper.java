@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import com.movie.ace.board.ReplyVO;
 
 
-
+ 
 public interface BoardMapper {
 
 		//게시글작성

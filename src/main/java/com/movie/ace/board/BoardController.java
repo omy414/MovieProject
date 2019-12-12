@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class BoardController {
-
+ 
 	@Inject
 	BoardMapper boardmapper;
 
@@ -148,7 +148,7 @@ public class BoardController {
 	@RequestMapping(value = "change", method = RequestMethod.GET)
 	public ModelAndView change(@RequestParam int mboard_no, HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("change");
+		mav.setViewName("board/change");
 		mav.addObject("dto", boardmapper.read(mboard_no));
 		return mav;
 	}

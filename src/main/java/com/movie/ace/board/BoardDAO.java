@@ -14,7 +14,7 @@ import com.movie.ace.board.ReplyVO;
 
 @Service
 public class BoardDAO implements BoardMapper {
-
+ 
 	@Inject
 	SqlSession SqlSession;
 
@@ -66,7 +66,7 @@ public class BoardDAO implements BoardMapper {
 	// 게시글 수정
 	@Override
 	public void update(BoardVO vo) throws Exception {
-		SqlSession.update("board.updateArticle", vo);
+		SqlSession.update("board.update", vo);
 	}
 
 	// 게시글 삭제

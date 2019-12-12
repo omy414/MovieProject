@@ -201,6 +201,10 @@
     $('.js-hide-cart').on('click',function(){
         $('.js-panel-cart').removeClass('show-header-cart');
     });
+    
+    $('.m-b-10').on('click',function(){
+    	$('.js-panel-cart').removeClass('show-header-cart');
+    });
 
     /*==================================================================
     [ Cart ]*/
