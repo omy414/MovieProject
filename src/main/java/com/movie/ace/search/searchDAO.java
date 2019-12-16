@@ -37,11 +37,12 @@ public class searchDAO {
 	public void getDirSearch(HttpServletRequest req, HttpServletResponse res) {
 		try {			
 			String search =  (String) req.getSession().getAttribute("search");  //검색어
+			String dmovie = search.replaceAll("\\p{Z}",""); //공백제거
 			String ServiceKey = "fb7915ecb3c3515612b6ea4cdeccb7a8"; //통전망 인증키
 
 			URL directorURL = new URL(
 					"http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key="
-							+ServiceKey+"&directorNm="+search);
+							+ServiceKey+"&directorNm="+dmovie);
 
 			HttpURLConnection dirHuc = (HttpURLConnection) directorURL.openConnection();
 			InputStream dirIs = dirHuc.getInputStream();
@@ -114,12 +115,13 @@ public class searchDAO {
 	////////////////////////////////영화명 검색
 	public void getMovieSearch(HttpServletRequest req, HttpServletResponse res) { 
 		try {			
-			String search =  (String) req.getSession().getAttribute("search"); //검색어
+			String search =  (String) req.getSession().getAttribute("search");  //검색어
+			String movie = search.replaceAll("\\p{Z}",""); //공백제거
 			String ServiceKey = "fb7915ecb3c3515612b6ea4cdeccb7a8"; //통전망 인증키
 
 			URL movieURL = new URL(
 					"http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key="
-							+ServiceKey+"&movieNm="+search);
+							+ServiceKey+"&movieNm="+movie);
 
 			HttpURLConnection movieHuc = (HttpURLConnection) movieURL.openConnection();
 			InputStream movieIs = movieHuc.getInputStream();
@@ -132,6 +134,7 @@ public class searchDAO {
 			JSONObject jo = (JSONObject) jp.parse(movieline);		
 			JSONObject MIR = (JSONObject) jo.get("movieListResult");
 			JSONArray MI= (JSONArray) MIR.get("movieList");
+			System.out.println("영화리스트 "+MI);
 			
 
 			if(MI.size()!=0) {

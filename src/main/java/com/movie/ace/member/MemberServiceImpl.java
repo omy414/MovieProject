@@ -14,7 +14,8 @@ public class MemberServiceImpl implements MemberService {
 	 
 	@Resource(name="memberDAO")
 	private MemberDAO memberDAO;
-
+	
+	//회원 등록
 	@Override
 	public void register(RegisterRequest regReq) throws Exception {
 		MemberVO member_id = memberDAO.selectById(regReq.getId());
@@ -29,7 +30,16 @@ public class MemberServiceImpl implements MemberService {
 		regReq.setPw(encPassword);
 		memberDAO.insertMember(regReq);
 	}
-
+	
+	//회원정보 수정
+	@Override
+	public void updateMember(ModifyRequest modReq) throws Exception {
+		String encPassword = passwordEncoder.encode(modReq.getPw());
+		modReq.setPw(encPassword);
+		memberDAO.updateMember(modReq);
+	}
+	
+	//아이디 중복 체크
 	@Override
 	public int idCheck(String id) throws Exception {
 		int cnt = memberDAO.idCheck(id);
@@ -42,4 +52,6 @@ public class MemberServiceImpl implements MemberService {
 		MemberVO member_no = memberDAO.noCheck();
 		return member_no;
 	}
+	
+	
 }

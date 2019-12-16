@@ -405,6 +405,93 @@ body{
   color: #fff;
 }
 
+/*-------------------   박스오피스 boxoffice  ----------------------*/
+.boxoffice{
+    background-color: gray;
+    position: relative;
+    margin: 0 auto;
+    height: 400px;
+    margin-bottom: 100px;
+}
+.movieInfo{
+    margin: 0 auto;
+    width: 80%;
+    height: 600px;
+}
+.movieInfo_title{
+  margin-bottom: 50px;
+  font-size: 30px;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.sm_mv_bg{
+  width: 70%;
+  height: 70%;
+  float: left;
+}
+.mv_view{
+  width: 600px;
+  height: 400px;
+}
+.mv_view video{
+  width: 880px;
+  height: 450px;
+}
+.poster{
+  margin-left: 10px;
+  float: left;
+  
+}
+.sm_mv_bg_img{
+  margin: 3px;
+  width: 170px;
+  height: 220px;
+  cursor: pointer;
+}
+.temp{
+   background-color: navy;
+    position: relative;
+    margin: 0 auto;
+    height: 400px;
+    margin-bottom: 100px;
+}
+.toptop{
+  margin-right: 50px;
+  float: right;
+  font-size: 15px;
+}
+
+#main_footer {
+  clear: both;
+  width: 100%;
+  height: 200px;
+  background-color: black;
+  margin: 0 auto;
+}
+
+.logo2 img {
+  margin-left: 200px;
+  max-width: 200px;
+  max-height: 200px;
+}
+.dev_list{
+  margin-left: 200px;
+  color: violet;
+}
+.comecome{
+  font-size: 20px;
+  margin-right: 200px;
+  float: right;
+  color: violet;
+}
+.copyright {
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  vertical-align: baseline;
+  margin: 30px 0px 0px 0px;
+  color: white;
+}
+
 /*---------------------------------------------*/
 .sub-menu {
   list-style-type: none;

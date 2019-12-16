@@ -11,7 +11,7 @@ public class ModalGetReplys {
 	int movie_rate;
 
 	public ModalGetReplys() {
-
+  
 	}
 
 	public ModalGetReplys(String member_id, String movie_reply, String moviecd, int member_no, int movie_rate) {

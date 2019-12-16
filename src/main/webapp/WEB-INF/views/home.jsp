@@ -117,6 +117,49 @@
 
 		</div>
 	</section>
+	
+	<div class="boxoffice">
+	
+	</div>
+	<div class="movieInfo">
+		<div class="movieInfo_title">
+		<span>MovieAce의 추천 영화</span>
+		</div>
+		<div class="sm_mv_bg" id="mv_bg">
+
+                    <figure class="mv_view">
+                      <div class="mv_full">
+                          <video id="mv_video" controls="controls" width="100%;" height="100%;" poster="http://image2.megabox.co.kr//mop/frontbanner/2019/D7/C9AB75-C206-4EAC-B85A-8FA5D7E9A11B.jpg" preload="none"
+                          src="http://m.mvod.megabox.co.kr/encodeFile/3550/2019/06/10/0c538a4992f6184e4327647ac76b8e9e_I.mp4" type="video/mp4">
+                          </video>
+                      </div>
+              		</figure>
+        </div>
+        <div class="poster">
+        <img class="sm_mv_bg_img" alt="frozen2" src="resources/img/poster/frozen2.jpg" onclick="mv_click('http://mvod.megabox.co.kr/encodeFile/3550/2019/09/27/f30ddc5d606eb93e9dd836038e16e4d8_W.mp4','resources/img/poster/frozen2_mv.png');">
+        <img class="sm_mv_bg_img" alt="ASHFALL" src="resources/img/poster/ASHFALL.jpg" onclick="mv_click('http://mvod.megabox.co.kr/encodeFile/3550/2019/12/06/dc5b4936174d011d417e04fb82c1133e_W.mp4','resources/img/poster/ashfall_mv.png');"><br>
+        <img class="sm_mv_bg_img" alt="weathering with you" src="resources/img/poster/weathering.jpg" onclick="mv_click('http://m.mvod.megabox.co.kr/encodeFile/3550/2019/06/10/0c538a4992f6184e4327647ac76b8e9e_I.mp4','http://image2.megabox.co.kr//mop/frontbanner/2019/D7/C9AB75-C206-4EAC-B85A-8FA5D7E9A11B.jpg');">
+        <img class="sm_mv_bg_img" alt="cats" src="resources/img/poster/cats.jpg" onclick="mv_click('http://mvod.megabox.co.kr/encodeFile/3550/2019/10/22/d62c53e27026121568c1d0a118789ccb_W.mp4','resources/img/poster/cats_mv.png');">
+        </div>
+	</div>
+	<script type="text/javascript">
+	function mv_click(mv, poster) {
+	$("#mv_video").attr("src", mv);
+	$("#mv_video").attr("poster", poster);
+	}
+	</script>
+	<div class="temp">
+	
+	</div>
+	<a href="#" onclick="window.scrollTo(0,0);return false;"><span class="toptop">젤위로 가자</span></a>
+	<footer id="main_footer">
+		<a href="#" class="logo2"> <img src="resources/img/logo.png" alt="IMG-LOGO"></a><br><br>
+		<span class="dev_list">개발자: 오민영, 박경남, 염승훈, 이아르미</span>
+		<a href="javascript:popupOpen();" class="comecome">오시는길</a>
+		<p class="copyright">
+			"위 내용에 대한 저작권 및 법적 책임은 자료제공사 또는 글쓴이에 있으며 MovieAce의 입장과 다를 수 있습니다."<br> "Copyright (c)" <a href="home">www.MoiveAce.com</a> " All right reserved."
+		</p>
+	</footer>
 
 
 
@@ -219,6 +262,14 @@
 			})
 		});
 	</script>
+<!--====================== 오시는 길 팝업창=======================================================================-->
+<script type="text/javascript">
+	function popupOpen(){
+        	var popUrl = "direction";
+        	var popOption= "width=900, height=700, resizable=no";
+        		window.open(popUrl,"",popOption);
+        }
+</script>
 <!--===============================================================================================-->
 	<script src="resources/js/main.js"></script>
 

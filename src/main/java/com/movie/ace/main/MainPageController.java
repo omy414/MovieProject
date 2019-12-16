@@ -32,5 +32,11 @@ public class MainPageController {
 	public String Test2() {
 		return "Test2";
 	}
+	
+	//찾아오는길
+		@RequestMapping(value = "/direction", method = RequestMethod.GET)
+		public String Direction(Locale locale, Model model) {
+			return "direction";
+		}
 
 }

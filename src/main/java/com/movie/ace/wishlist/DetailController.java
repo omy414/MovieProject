@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/detail/*")
 public class DetailController {
-	
+	  
 	@Autowired
 	private SqlSession ss;
 

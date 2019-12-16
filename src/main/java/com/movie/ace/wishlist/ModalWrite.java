@@ -1,5 +1,5 @@
 package com.movie.ace.wishlist;
-
+ 
 import org.springframework.stereotype.Service;
 @Service
 public class ModalWrite {
@@ -13,7 +13,7 @@ public class ModalWrite {
 	
 	}
 	
-
+ 
 	public ModalWrite(String moviecd, String movie_reply, int member_no, int movie_rate) {
 		super();
 		this.moviecd = moviecd;

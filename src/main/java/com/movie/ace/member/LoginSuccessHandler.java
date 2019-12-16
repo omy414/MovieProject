@@ -30,6 +30,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	
 	private String loginId;
 	private String defaultUrl;
+	private String password;
 	
 	@Inject
 	private UserDetailsService userSer;
@@ -41,19 +42,23 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		String username = request.getParameter(loginId);
 		System.out.println("username= "+username);
 		
+		String rawPassword = request.getParameter(password);
+		System.out.println("rawPassword= "+rawPassword);
+		
 		
 		clearAuthenticationAttributes(request);
 		
-		mkUserInfo(username, request);
+		mkUserInfo(username, rawPassword, request);
 		
 		resultRedirectStrategy(request, response, authentication);
 		
 	}
 	
-	protected void mkUserInfo(String username, HttpServletRequest request) {
+	protected void mkUserInfo(String username, String rawPassword, HttpServletRequest request) {
 		CustomUserDetails userInfo = ((CustomUserDetailsService) userSer).getUserInfo(username); 
 		HttpSession session = request.getSession(true);
 		session.setAttribute("userInfo", userInfo);
+		session.setAttribute("rawPw", rawPassword);
 	}
 	
 	protected void clearAuthenticationAttributes(HttpServletRequest request) {

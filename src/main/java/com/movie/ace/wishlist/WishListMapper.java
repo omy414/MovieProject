@@ -1,7 +1,7 @@
 package com.movie.ace.wishlist;
-
+ 
 import java.util.List;
-
+ 
 public interface WishListMapper {
 
 	public List<WishList> getWishList(WishList wishlist); 

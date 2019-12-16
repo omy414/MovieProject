@@ -23,19 +23,19 @@
 	
 	<!-- Application Loggers -->
 	<!-- 실제 로그 기능을 수행하는 개체, level에 따라 Appender로 전달-->
-	<!-- <logger name="com.movie.ace" additivity="false">additivity 상위 Appender 상속 여부
+	<logger name="com.movie.ace" additivity="false"><!--  additivity 상위 Appender 상속 여부 -->
 		<level value="debug" />
 		<appender-ref ref="console"/>
-	</logger> -->
+	</logger>
 	
 	<!-- Query Loggers -->
-	<!-- <logger name="jdbc.sqlonly" additivity="false">
+	<logger name="jdbc.sqlonly" additivity="false">
 		<level value="info"/>
 		<appender-ref ref="console-infolog"/>
-	</logger> -->
+	</logger>
 		
 	<!-- Connection Loggers -->
-	<!-- <logger name="jdbc.connection" additivity="false">
+	<logger name="jdbc.connection" additivity="false">
 		<level value="info"/>
 		<appender-ref ref="console-infolog"/>
 	</logger>
@@ -43,7 +43,7 @@
 	<logger name="com.zaxxer.hikari" additivity="false">
 		<level value="debug"/>
 		<appender-ref ref="console-infolog"/>
-	</logger> -->
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 <!-- 	<logger name="org.springframework.core">

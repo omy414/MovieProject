@@ -245,7 +245,7 @@ function modal_detail_write(memberno){
 							<textarea id="textarea" title="한줄평" cols="60px" rows="5px"
 								maxlength="80" placeholder="한줄평 쓰세요."></textarea>
 							<button type="button" class="btn btn-primary"
-								onclick="modal_detail_write(${member_num});">등록</button>
+								onclick="modal_detail_write(${userInfo.member_no});">등록</button>
 						</div>
 						<hr>
 						<h4>댓글</h4>

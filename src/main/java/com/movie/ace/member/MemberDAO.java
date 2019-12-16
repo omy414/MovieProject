@@ -11,14 +11,17 @@ public class MemberDAO {
 	@Inject
 	private SqlSessionTemplate sqlSession;
 	
+	//이메일로 조회
 	public MemberVO selectByEmail(String email) {
 		return (MemberVO) sqlSession.selectOne("member.selectByEmail", email);
 	}
 	
+	//아이디로 조회
 	public MemberVO selectById(String id) {
 		return (MemberVO) sqlSession.selectOne("member.selectById", id);
 	}
 	
+	//
 	public Object loginCheck(String id) {
 		return sqlSession.selectOne("member.loginCheck", id);
 	}
@@ -26,6 +29,10 @@ public class MemberDAO {
 	public void insertMember(RegisterRequest regReq) {
 		sqlSession.insert("member.register", regReq);
 		sqlSession.insert("authority", regReq);
+	}
+	
+	public void updateMember(ModifyRequest modReq) {
+		sqlSession.update("member.updateMember", modReq);
 	}
 	
 	public int idCheck(String id) {

@@ -1,5 +1,5 @@
 package com.movie.ace.wishlist;
-
+ 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,7 +14,7 @@ public class WishListController {
 
 	@Autowired
 	private WishListDAO wishDAO;
-
+ 
 	@RequestMapping(value = "/Test", method = RequestMethod.GET)
 	public String Movielist(HttpServletRequest req, HttpServletResponse res) {
 			System.out.println("************************/Test 들어옴***********************************");

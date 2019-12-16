@@ -44,6 +44,19 @@
     	]]>
     </select>
     
+    <update id="updateMember">
+    	<![CDATA[
+    		update Member set 
+    			member_pw =#{pw},
+    			genres =#{genres},
+    			postcode = #{postcode},
+    			address = #{address},
+    			detailAddress = #{detailAddress},
+    			extraAddress = #{extraAddress}
+    			where member_id =#{id}
+    	]]>
+    </update>
+    
     <insert id="register">
         <![CDATA[
             INSERT INTO Member

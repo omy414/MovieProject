@@ -21,8 +21,6 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
-		<!-- interceptor(value=0)를 먼저 실행하기 위해 값을 1로 줌 -->
-		<beans:property name="order" value="1"/>
 	</beans:bean>
 
 	<context:component-scan base-package="com.movie.ace" />

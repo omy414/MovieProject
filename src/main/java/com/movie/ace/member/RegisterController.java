@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,13 +17,13 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@SessionAttributes({"genreList"})//세션에 genreList 객체 저장
 public class RegisterController {
 	 
 	@Resource(name="memberService")
 	private MemberService memberService;
 	
 	//View로 넘길 장르 리스트 초기화 함수
+	@ModelAttribute("genreList")
 	List<String> genreList(){
 		List<String> genreList = new ArrayList<String>();
 		genreList.add("액션");
@@ -32,10 +33,9 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value="/signUp", method = RequestMethod.GET)
-	public ModelAndView signUpForm() {
+	public ModelAndView signUpForm(@ModelAttribute("registerRequest") RegisterRequest regReq) {
 		ModelAndView mv = new ModelAndView("/member/signUp");
-		mv.addObject("genreList", genreList());
-		mv.addObject("registerRequest", new RegisterRequest());
+		mv.addObject(genreList());
 		return mv;
 	}
 	

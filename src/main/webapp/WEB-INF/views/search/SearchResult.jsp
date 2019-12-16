@@ -22,45 +22,207 @@
 		}
 
 	});
+	function clicke(thumnail, plot, movieNm, dirNm, genres, actors, type,
+			runtime, opendt, movieCd) {
+
+		$("#thumnail").attr("src", thumnail);
+		$("#mName").text(movieNm);
+		$("#mPlot").text(plot);
+		$("#mDir").text(dirNm);
+		$("#mGenre").text(genres);
+		$("#mActor").text(actors);
+		console.log(actors);
+		$("#mRuntime").text(runtime);
+		$("#mOpen").text(opendt);
+		$("#mCode").text(movieCd);
+
+		showReply(movieCd);
+
+	}
+	/* 스프링시큐리티 보안에 관한 토큰 */
+	var csrfHeaderName ="${_csrf.headerName}";
+	var csrfTokenValue = "${_csrf.token}";
+
+	function showReply(movieCd) {
+
+		var moviecd = movieCd;
+
+		$.ajax({
+			type : "post",
+			beforeSend: function(xhr){
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			},
+			url : "/rate/getReply",
+			data : {
+				"moviecd" : moviecd
+			},
+			success : function updateReplys(reply) {
+				//테이블에 붙이기
+				//#reply 에 붙여야 한다.
+				$('#reply').empty();
+				var str = '<tr>';
+				$.each(reply, function(i) {
+					if (i != 0) {
+						str += '<tr>';
+					}
+					str += '<td>아이디:' + reply[i].member_id + '</td><td>평점:'
+							+ reply[i].movie_rate + '</td><td>댓글내용: '
+							+ reply[i].movie_reply + '</td>';
+					str += '</tr>'
+				})
+				$("#reply").append(str);
+
+			},
+			error : function() {
+				alert("DB안에 한줄평이 이미 들어간 상태 입니다.");
+			}
+		});
+	}
+
+	function writeReply() {
+		var member_no = "${userInfo.member_no}"; //회원번호
+		var mRate = $('#rateResult').text();
+		var mdir = $('#mDir').text();
+		var mname = $("#mName").text();
+		var mactor = $("#mActor").text();
+		var mopendt = $("#mOpen").text();
+		var mruntime = $("#mRuntime").text();
+		var mgenre = $("#mGenre").text();
+		var mplot = $("#mPlot").text();
+		var mposter = $("#thumnail").attr("src");
+		var mcode = $('#mCode').text();
+		var comment = $('#inputComment').val();
+		console.log("영화코드: " + mcode + "코멘트: " + comment);
+
+		/* 		var alldata ={"member_no":member_num,"movie_reply":comment,"moviecd":mcode}; */
+		var alldata = {
+			"member_no" : member_no,
+			"director" : mdir,
+			"movieNm" : mname,
+			"genres" : mgenre,
+			"thumnailURL" : mposter,
+			"actors" : mactor,
+			"plot" : mplot,
+			"runtime" : mruntime,
+			"openDate" : mopendt,
+			"movie_reply" : comment,
+			"moviecd" : mcode,
+			"movie_rate" : mRate
+		};
+		console.log(alldata);
+		//		var alldata={"movieNm":mname,"movie_reply":comment, "moviecd":mcode};
+
+		$.ajax({
+			type : "post",
+			beforeSend: function(xhr){
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			},
+			url : "/rate/setReply",
+			data : alldata,
+			success : function() {
+				$("#inputComment").val("");
+
+				//글쓰고 나면 다시 댓글창 새로고침
+				showReply(mcode);
+
+			},
+			error : function() {
+				alert("DB안에 한줄평이 이미 들어간 상태 입니다.");
+			}
+		});
+
+	}
+	
+	
+	$(document).ready(function(){
+		var rate=0.0;
+		$('.starRev span').hover(function(){
+	   		 $(this).parent().children('span').removeClass('on');
+	   		 $(this).addClass('on').prevAll('span').addClass('on');
+	   		 rate=$(this).text();
+	   		 $("#rateResult").text(rate);
+	  	  return false;
+		});		
+	});
 </script>
-<script src="/resources/js/modal_js.js"></script>
+<!-- <script src="resources/js/modal_js.js"></script> -->
 <style>
 .modal {
 	top: 13%;
 	margin-top: -50px;
 }
+.starR1{
+    background: url('resources/img/ico_review.png') no-repeat -52px 0;
+    background-size: auto 100%;
+    width: 15px;
+    height: 30px;
+    float:left;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+.starR2{
+    background: url('resources/img/ico_review.png') no-repeat right 0;
+    background-size: auto 100%;
+    width: 15px;
+    height: 30px;
+    float:left;
+    text-indent: -9999px;
+    cursor: pointer;
+}
+.starR1.on{background-position:0 0;}
+.starR2.on{background-position:-15px 0;}
 </style>
 </head>
 <body>
 
 	<!-- Modal -->
-	<div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
-		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1"
+		role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
-				<div class="modal-header">
-				</div>
+				<div class="modal-header"></div>
 				<div class="modal-body"></div>
 				<table>
-					<th></th>
-					<th></th>
-					<tr class="modal-1st-li">
-						<td rowspan="5">
-							<img src="" id="thumnail">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<ul>
-								<h2><li class="modal-head-movieNm"></h2>
-								<li class="modal-director"></li>
-								<li class="modal-actor"></li>	
-								<li class="modal-openDT"></li>
-								<li class="modal-runtime"></li>
-								<li class="modal-genre"></li>											
-							</ul>
-						<td>	
-					</tr>					
+					<thead>
+						<th></th>
+						<th></th>
+						<th></th>
+					</thead>
+					<tbody>
+						<tr class="modal-1st-li">
+							<td rowspan="7">
+								<img src=""	id="thumnail"></td>
+
+							<td></td>
+							<td id="mCode" style="visibility: hidden;"></td>
+						</tr>
+						<tr>
+							<td colspan="2"><h2 id="mName"></h2></td>
+							
+						</tr>
+						<tr>
+							<td align="right">감독&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; </td>
+							<td id="mDir"></td>
+						</tr>
+						<tr>
+							<td align="right">배우&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; </td>
+							<td id="mActor"></td>
+						</tr>
+						<tr>
+							<td align="right">개봉일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; </td>
+							<td id="mOpen"></td>
+						</tr>
+						<tr>
+							<td align="right">상영시간&nbsp;:&nbsp;</td>
+							<td id="mRuntime"></td>
+						</tr>
+						<tr>
+							<td align="right">장르&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp; </td>
+							<td id="mGenre"></td>
+						</tr>
+
+					</tbody>
+
 				</table>
 				<table>
 					<tr>
@@ -68,8 +230,8 @@
 							<ul>
 								<br>
 								<br>
-								<li><h3>줄거리</h3><br><br></li>
-								<li class="modal-plot"></li>
+								<li><h3>줄거리</h3> <br> <br></li>
+								<li id="mPlot" class="modal-plot"></li>
 							</ul>
 						</td>
 					</tr>
@@ -77,20 +239,60 @@
 				<br>
 				<div style="border: 0.3px solid #bcbcbc;"></div>
 				<br>
-				<div class="rateArea" >
-				 별점영역
-				
-				</div>
+				<div class="rateArea"></div>
 				<div class="form-group">
-               	<form>
-                    <label for="inputComment">Comments</label>
-                    <textarea class="form-control" id="inputComment" rows="4" style="width:60%;"></textarea>
-                	<button style="background-color:#4CAF50; border:none; border-radius:5px; color:white; width:60px;">test</button>
-                </form>
-                </div>
-				<div class="modal-footer">
-						
+					<div>
+						<table style="width: 100%;">
+							<th>별점</th>
+							<th>댓글</th>
+							
+							<tr>
+								
+								<div>
+								
+									<td style="width:30%;">
+										<div id="TestStar" class="starRev">
+										  <span class="starR1">0.5</span>
+										  <span class="starR2">1.0</span>
+										  <span class="starR1">1.5</span>
+										  <span class="starR2">2.0</span>
+										  <span class="starR1">2.5</span>
+										  <span class="starR2">3.0</span>
+										  <span class="starR1">3.5</span>
+										  <span class="starR2">4.0</span>
+										  <span class="starR1">4.5</span>
+										  <span class="starR2">5.0</span>
+										</div>	
+																	
+									</td>
+									
+								</div>
+								<td>
+									<div>									
+										<textarea class="form-control" id="inputComment" rows="4"
+											style="width: 70%; resize: none;"></textarea>									
+									</div>
+								</td>
+							</tr>
+							<tr>
+							<td align="left" style="padding-left:8%;">
+								<label id="rateResult" >test</label>	
+							</td>
+							<td style="padding-left:41%;">
+								<button onclick="writeReply()"
+											style="background-color: #4CAF50; border: none; border-radius: 5px; color: white; width: 60px;">등록</button>
+							</td>
+							</tr>
+						</table>
+					</div>
 				</div>
+				<div style="border: 0.3px solid #bcbcbc;"></div>
+				<div>
+					<label>댓글</label>
+					<table id="reply">
+					</table>
+				</div>
+				<div class="modal-footer"></div>
 			</div>
 		</div>
 	</div>
@@ -113,35 +315,30 @@
 		<c:if test="${not empty DirectorSearchResult }">
 			<c:forEach var="dir" items="${DirectorSearchResult }">
 				<tr>
-					<td rowspan="4">
-						<c:if test="${dir.thumnailURL ne null}">
+					<td rowspan="4"><c:if test="${dir.thumnailURL ne null}">
 							<a data-toggle="modal" data-target=".bd-example-modal-lg"
-								onclick="clicke('${dir.thumnailURL }','${dir.plot }','${dir.movieNm }','${dir.director }','${dir.genres }','${dir.actors }','${dir.typeNm }','${dir.runtime }','${dir.openDate }');">
+								onclick="clicke('${dir.thumnailURL }','${dir.plot }','${dir.movieNm }','${dir.director }','${dir.genres }','${dir.actors }','${dir.typeNm }','${dir.runtime }','${dir.openDate }','${dir.movieCd }');">
 								<img src="${dir.thumnailURL }">
 							</a>
-						</c:if> 
-						<c:if test= "${dir.thumnailURL eq null}">
-							<c:set var = "url" value="/resources/img/basicposter.png"/>
+						</c:if> <c:if test="${dir.thumnailURL eq null}">
+							<c:set var="url" value="/resources/img/basicposter.png" />
 							<a data-toggle="modal" data-target=".bd-example-modal-lg"
-								onclick="clicke('${url }','${dir.plot }','${dir.movieNm }','${dir.director }','${dir.genres }','${dir.actors }','${dir.typeNm }','${dir.runtime }','${dir.openDate }');">
-							<img src="${pageContext.request.contextPath}/resources/img/basicposter.png">															
+								onclick="clicke('${url }','${dir.plot }','${dir.movieNm }','${dir.director }','${dir.genres }','${dir.actors }','${dir.typeNm }','${dir.runtime }','${dir.openDate }','${dir.movieCd }');">
+								<img
+								src="${pageContext.request.contextPath}/resources/img/basicposter.png">
 							</a>
+						</c:if></td>
+
+					<td>영화명: <c:if test="${dir.thumnailURL ne null}">
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"
+								onclick="clicke('${dir.thumnailURL }','${dir.plot }','${dir.movieNm }','${dir.director }','${dir.genres }','${dir.actors }','${dir.typeNm }','${dir.runtime }','${dir.openDate }','${dir.movieCd }');">
+								${dir.movieNm }</a>
+						</c:if> <c:if test="${dir.thumnailURL eq null}">
+							<c:set var="url" value="/resources/img/basicposter.png" />
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"
+								onclick="clicke('${url }','${dir.plot }','${dir.movieNm }','${dir.director }','${dir.genres }','${dir.actors }','${dir.typeNm }','${dir.runtime }','${dir.openDate }','${dir.movieCd }');">
+								${dir.movieNm } </a>
 						</c:if>
-					</td>
-						
-					<td> 영화명: 
-					<c:if test="${dir.thumnailURL ne null}">
-						<a data-toggle="modal" data-target=".bd-example-modal-lg" 
-						onclick="clicke('${dir.thumnailURL }','${dir.plot }','${dir.movieNm }','${dir.director }','${dir.genres }','${dir.actors }','${dir.typeNm }','${dir.runtime }','${dir.openDate }');"> 
-						${dir.movieNm }</a>
-					</c:if>
-					<c:if test= "${dir.thumnailURL eq null}">
-						<c:set var = "url" value="/resources/img/basicposter.png"/>
-						<a data-toggle="modal" data-target=".bd-example-modal-lg" 
-						onclick="clicke('${url }','${dir.plot }','${dir.movieNm }','${dir.director }','${dir.genres }','${dir.actors }','${dir.typeNm }','${dir.runtime }','${dir.openDate }');"> 
-						${dir.movieNm }
-						</a>
-					</c:if>
 					</td>
 				</tr>
 				<tr>
@@ -169,34 +366,29 @@
 		<c:if test="${not empty MovieSearchResult }">
 			<c:forEach var="m" items="${MovieSearchResult }">
 				<tr>
-					<td rowspan="4">
-					<c:if test="${m.thumnailURL ne null}">
-						<a data-toggle="modal" data-target=".bd-example-modal-lg" 
-						onclick="clicke('${m.thumnailURL }','${m.plot }','${m.movieNm }','${m.director }','${m.genres }','${m.actors }','${m.typeNm }','${m.runtime }','${m.openDate }');">
-						<img src="${m.thumnailURL }" onclick=""></a>
-					</c:if>	
-					<c:if test= "${m.thumnailURL eq null}">
-					<c:set var = "url" value="/resources/img/basicposter.png"/>
+					<td rowspan="4"><c:if test="${m.thumnailURL ne null}">
 							<a data-toggle="modal" data-target=".bd-example-modal-lg"
-								onclick="clicke('${url }','${m.plot }','${m.movieNm }','${m.director }','${m.genres }','${m.actors }','${m.typeNm }','${m.runtime }','${m.openDate }');">
-								<img src="/resources/img/basicposter.png">								
+								onclick="clicke('${m.thumnailURL }','${m.plot }','${m.movieNm }','${m.director }','${m.genres }','${m.actors }','${m.typeNm }','${m.runtime }','${m.openDate }','${m.movieCd }');">
+								<img src="${m.thumnailURL }" onclick="">
 							</a>
-					</c:if>
-					</td>
-					
-					<td>
-					<c:if test="${m.thumnailURL ne null}">
-						<a data-toggle="modal" data-target=".bd-example-modal-lg" 
-						onclick="clicke('${m.thumnailURL }','${m.plot }','${m.movieNm }','${m.director }','${m.genres }','${m.actors }','${m.typeNm }','${m.runtime }','${m.openDate }');">
-						영화명: ${m.movieNm }</a>
-					</c:if>	
-					<c:if test= "${m.thumnailURL eq null}">	
-					<c:set var = "url" value="/resources/img/basicposter.png"/>
-						<a data-toggle="modal" data-target=".bd-example-modal-lg"
-						onclick="clicke('${url }','${m.plot }','${m.movieNm }','${m.director }','${m.genres }','${m.actors }','${m.typeNm }','${m.runtime }','${m.openDate }');">
-						영화명: ${m.movieNm }</a>
-					</c:if>
-					</td>
+						</c:if> <c:if test="${m.thumnailURL eq null}">
+							<c:set var="url" value="/resources/img/basicposter.png" />
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"
+								onclick="clicke('${url }','${m.plot }','${m.movieNm }','${m.director }','${m.genres }','${m.actors }','${m.typeNm }','${m.runtime }','${m.openDate }','${m.movieCd }');">
+								<img src="/resources/img/basicposter.png">
+							</a>
+						</c:if></td>
+
+					<td><c:if test="${m.thumnailURL ne null}">
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"
+								onclick="clicke('${m.thumnailURL }','${m.plot }','${m.movieNm }','${m.director }','${m.genres }','${m.actors }','${m.typeNm }','${m.runtime }','${m.openDate }','${m.movieCd }');">
+								영화명: ${m.movieNm }</a>
+						</c:if> <c:if test="${m.thumnailURL eq null}">
+							<c:set var="url" value="/resources/img/basicposter.png" />
+							<a data-toggle="modal" data-target=".bd-example-modal-lg"
+								onclick="clicke('${url }','${m.plot }','${m.movieNm }','${m.director }','${m.genres }','${m.actors }','${m.typeNm }','${m.runtime }','${m.openDate }','${m.movieCd }');">
+								영화명: ${m.movieNm }</a>
+						</c:if></td>
 				</tr>
 				<tr>
 					<td>감독명: ${m.director }</td>
@@ -207,7 +399,7 @@
 				<tr>
 					<td>배우 : ${m.actors }</td>
 				</tr>
-  
+
 				</tr>
 			</c:forEach>
 		</c:if>
@@ -218,7 +410,7 @@
 			</tr>
 		</c:if>
 	</table>
-	
+
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </body>
 </html>

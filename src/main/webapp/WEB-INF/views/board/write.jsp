@@ -127,11 +127,11 @@
 			<option value="MovieBoard">영화게시판</option>
 			<option value="FreeBoard">자유게시판</option>
 			<option value="QnABoard">문의게시판</option>
-		<%-- <c:if test="true">
+		<%-- <c:if test="${userInfo.member_no == 0}">
 			<option value="notice">공지사항</option>
-		</c:if> --%> 
+		</c:if> --%>
 		</select>
-		<c:if test="true"> <!-- 일반 회원 세션 -->
+		<c:if test="${userInfo.member_no != 0}"> <!-- 일반 회원 세션 -->
 		<input id="mboard_header" name="mboard_header" type="hidden"/> 
 		<select id="header_select" onchange="header()">
 			<option value="장르선택">[장르선택]</option>
@@ -149,7 +149,7 @@
 			<option value="애니메이션">[애니메이션]</option>
 		</select>
 		</c:if>
-		<c:if test="false"> <!-- 게시판 관리자 세션 들어가야함 -->
+		<c:if test="${userInfo.member_no == 0}"> <!-- 게시판 관리자 세션 들어가야함 -->
 		<input id="mboard_header" name="mboard_header" type="hidden"/> 
 		<select id="header_select" onchange="header()">
 			<option value="장르선택">[말머리선택]</option>

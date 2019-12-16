@@ -22,11 +22,8 @@ public class ReplyController {
 	//좋아요
 	@RequestMapping("mboard_like")
 	public void mboard_like(@ModelAttribute BoardVO vo, HttpSession session) throws Exception {
-		String member_id = (String) session.getAttribute("1");
-		vo.setMember_id(member_id);
 		boardmapper.mboard_like(vo, session);
 	}
-	
 	
 	
 	//신고하기

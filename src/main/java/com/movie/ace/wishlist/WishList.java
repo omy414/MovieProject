@@ -1,5 +1,5 @@
 package com.movie.ace.wishlist;
-
+ 
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +15,7 @@ public class WishList {
 	String plot;
 	String poster;
 	String audiacc;
-
+ 
 	public WishList() {
 		// TODO Auto-generated constructor stub
 	}
