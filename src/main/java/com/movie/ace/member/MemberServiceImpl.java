@@ -1,16 +1,18 @@
 package com.movie.ace.member;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.inject.Inject;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService {
 	
 	@Inject
-	PasswordEncoder passwordEncoder;
+	BCryptPasswordEncoder passwordEncoder;
 	 
 	@Resource(name="memberDAO")
 	private MemberDAO memberDAO;
@@ -53,5 +55,38 @@ public class MemberServiceImpl implements MemberService {
 		return member_no;
 	}
 	
+	//회원 리스트
+	public List<MemberVO> memberList(int start, int end) throws Exception{
+		return memberDAO.memberList(start,end);
+	}
 	
+	//회원 차단
+	@Override
+	public int blockMember(int mno) {
+		return memberDAO.blockMember(mno);
+	}
+		
+	//회원 차단 해제
+	@Override
+	public int unlockMember(int mno) {
+		return memberDAO.unlockMember(mno);
+	}
+	
+	//회원 수 체크
+	@Override
+	public int memberCount() {
+		return memberDAO.memberCount();
+	}
+
+	//차단 회원 수 체크
+	@Override
+	public int blackMemberCount() {
+		return memberDAO.blackMemberCount();
+	}
+
+	//차단 회원 리스트
+	@Override
+	public List<MemberVO> blackMemberList(int start, int end) {
+		return memberDAO.blackMemberList(start,end);
+	}
 }

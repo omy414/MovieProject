@@ -407,11 +407,31 @@ body{
 
 /*-------------------   박스오피스 boxoffice  ----------------------*/
 .boxoffice{
-    background-color: gray;
     position: relative;
     margin: 0 auto;
-    height: 400px;
-    margin-bottom: 100px;
+    height: 500px;
+	background-color: #F2F2F2;
+}
+#box_title{
+  margin-top: -40px;
+  text-align: center;
+}
+
+#box_title{
+  padding: 20px;
+  margin: 0 auto;
+  font-size: 50px;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.box_hr{
+  border: solid 1px;
+}
+.box_table{
+  margin-top: -200px;
+  margin: 0 auto;
+}
+.box_table td{
+  padding: 20px;
 }
 .movieInfo{
     margin: 0 auto;
@@ -419,7 +439,7 @@ body{
     height: 600px;
 }
 .movieInfo_title{
-  margin-bottom: 50px;
+  padding: 20px;
   font-size: 30px;
   font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -447,6 +467,7 @@ body{
   height: 220px;
   cursor: pointer;
 }
+
 .temp{
    background-color: navy;
     position: relative;
@@ -491,7 +512,6 @@ body{
   margin: 30px 0px 0px 0px;
   color: white;
 }
-
 /*---------------------------------------------*/
 .sub-menu {
   list-style-type: none;

@@ -29,7 +29,7 @@ public class BoardPager {
 			setBlockRange();
 		}
 		public void setBlockRange() {
-			//현재 페이지가 몇번쨰 페이지 블록에 속하는지 계산
+			//현재 페이지가 몇번째 페이지 블록에 속하는지 계산
 			curBlock = (int)Math.ceil((curPage-1)/BLOCK_SCALE)+1;
 			// 현재 페이지 블록의 시작, 끝 번호 계산
 			blockBegin = (curBlock-1)*BLOCK_SCALE+1;

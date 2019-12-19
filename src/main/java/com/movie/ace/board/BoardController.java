@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +19,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.movie.ace.member.MemberService;
+import com.movie.ace.member.MemberVO;
+
 @Controller
 public class BoardController {
  
 	@Inject
 	BoardMapper boardmapper;
+	
+	@Inject
+	MemberService memberSer;
 
 	// 게시판 보기
 	@RequestMapping("Movieboard")
@@ -70,8 +77,11 @@ public class BoardController {
 	}
 
 	// 관리자페이지
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping(value = "AdminPage", method = RequestMethod.GET)
-	public ModelAndView adminPage(@RequestParam(defaultValue = "1") int curPage) throws Exception {
+	public ModelAndView adminPage(@RequestParam(defaultValue = "1") int curPage, @RequestParam(defaultValue="1") int memPage,
+			@RequestParam(defaultValue = "1") int blmPage) throws Exception {
+		
 		int count = boardmapper.reportCount();
 		// 페이지 나누기
 		BoardPager boardPager = new BoardPager(count, curPage);
@@ -87,9 +97,41 @@ public class BoardController {
 		map.put("list", list);
 		map.put("count", count); // 레코드 갯수
 		map.put("boardPager", boardPager); // 페이지 처리
-
-		ModelAndView mav = new ModelAndView();
+		
+		//회원 수 가져오기
+		int memberCount = memberSer.memberCount();
+		//회원 테이블 페이지 나누기
+		BoardPager memberPager = new BoardPager(memberCount, memPage);
+		int first = memberPager.getPageBegin();
+		int last = memberPager.getPageEnd();
+		
+		List<MemberVO> memberList = memberSer.memberList(first, ++last);
+		System.out.println("first: "+first);
+		System.out.println("last: "+last);
+		// 데이터를 맵에 저장
+		Map<String, Object> memberMap = new HashMap<String, Object>();
+		memberMap.put("memberList", memberList);
+		memberMap.put("memberPager", memberPager);
+		
+		//차단 회원 카운트
+		int blackMemberCount = memberSer.blackMemberCount();
+		System.out.println("차단회원수: "+blackMemberCount);
+		//차단 회원 페이지 나누기
+		BoardPager blackMemberPager = new BoardPager(blackMemberCount, blmPage);
+		int st = blackMemberPager.getPageBegin();
+		int ed = blackMemberPager.getPageEnd();
+		List<MemberVO> blackMemberList = memberSer.blackMemberList(st, ++ed);
+		System.out.println("st: "+st);
+		System.out.println("ed: "+ed);
+		// 데이터를 맵에 저장
+		Map<String, Object> blackMemberMap = new HashMap<String, Object>();
+		blackMemberMap.put("blackMemberList", blackMemberList);
+		blackMemberMap.put("blackMemberPager", blackMemberPager);
+		
+		ModelAndView mav = new ModelAndView(); 
 		mav.addObject("map", map); // 맵에 저장된 데이터를 mav에 저장
+		mav.addObject("memberMap", memberMap);//회원 테이블 mav 통해 뷰로 전달
+		mav.addObject("blackMemberMap", blackMemberMap);//블랙 회원 뷰로 전달
 		mav.setViewName("board/AdminPage");
 		return mav;
 	}
@@ -107,13 +149,14 @@ public class BoardController {
 	}
 
 	// 글쓰기 폼보기
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
 	@RequestMapping(value = "write", method = RequestMethod.GET)
 	public String write() {
 		return "board/write";
 	}
 
 	// 게시글 작성처리
-
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
 	public String insert(@ModelAttribute BoardVO vo) throws Exception {
 		boardmapper.create(vo);
@@ -145,6 +188,7 @@ public class BoardController {
 	}
 
 	// 게시글 수정으로 가기
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
 	@RequestMapping(value = "change", method = RequestMethod.GET)
 	public ModelAndView change(@RequestParam int mboard_no, HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView();
@@ -161,6 +205,7 @@ public class BoardController {
 	}
 
 	// 게시글 삭제
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MEMBER')")
 	@RequestMapping("delete")
 	public String delete(@RequestParam int mboard_no) throws Exception {
 		boardmapper.deleteReply(mboard_no);

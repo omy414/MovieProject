@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.movie.ace.rate.RateMapper"><!-- 인터페이스자리 -->
+	<select id="checkBeforeInsert"
+		parameterType="com.movie.ace.rate.RateVO"
+		resultType="int">
+	select count(*) from MovieRate where member_no = #{member_no} and moviecd = #{moviecd}
+	</select>
+
+
 	<insert id ="writeReply"
 	 parameterType="com.movie.ace.rate.RateVO">
 	  insert into MovieRate(moviecd,member_no,movie_rate,movie_reply,movie_reply_date)

@@ -30,6 +30,7 @@
 			listReply2();
 
     $("#btnComments").click(function(){
+    	alert("${userInfo.authority}");
     	var mreply_content = $("#mreply_content").val();
     	var member_no = "${userInfo.member_no}";
     	var mboard_no="${dto.mboard_no}"
@@ -80,7 +81,7 @@
 				},
 	    		url: "${path}/reply/mboard_like",
 	    		data: param,
-	    		success: function(){
+	    		success: function(){ 
 	    			mboard_like_cnt = Number(mboard_like_cnt) +1;
 	    			$("#like_btn").text(mboard_like_cnt);
 	    		}
@@ -296,7 +297,7 @@ a:hover {
 				</tr>
 
 				<tr align="center">
-					<c:if test="${userInfo.member_no == dto.member_no}">
+					<c:if test="${userInfo.member_no == dto.member_no || userInfo.authority eq 'ROLE_ADMIN'}">
 					<td colspan="2" width="399"><input type=button class="btn btn-primary changego" value="수정" Onclick="location.href='${path}/change?mboard_no=${dto.mboard_no}'"> 
         			<input type=button class="btn delete" value="삭제" Onclick="delete2()">
 					<input type=button class="btn btn-primary listgo" value="목록" OnClick="location.href='Movieboard'"> 
@@ -306,7 +307,7 @@ a:hover {
         			<input type=hidden class="btn delete" value="삭제" Onclick="delete2()">
 					<input type=button class="btn btn-primary listgo" value="목록" OnClick="location.href='Movieboard'"> 
       				</c:if>
-      				<c:if test="${userInfo.member_no != null and userInfo.member_no != dto.member_no}">
+      				<c:if test="${userInfo.authority eq 'ROLE_MEMBER' and userInfo.member_no != dto.member_no}">
 					<td colspan="2" width="399"><input type=hidden class="btn btn-primary changego" value="수정" Onclick="location.href='${path}/change?mboard_no=${dto.mboard_no}'">
         			<input type=hidden class="btn delete" value="삭제" Onclick="delete2()">
 					<input type=button class="btn btn-primary listgo" value="목록" OnClick="location.href='Movieboard'"> 
@@ -333,7 +334,7 @@ a:hover {
 				<c:if test="${userInfo.member_no == null}">
     				<textarea style="width: 100%;" rows="5 cols="80" name="replytext" id="replylogin" placeholder="로그인이 필요합니다." readonly></textarea>
     			</c:if>
-    			<c:if test="${userInfo.member_no != null}">
+    			<c:if test="${userInfo.authority eq 'ROLE_MEMBER' || userInfo.authority eq 'ROLE_ADMIN'}">
     				<textarea style="width: 100%;" rows="5 cols="80" name="mreply_content" id="mreply_content" placeholder="댓글을 입력하세요" ></textarea>
       				<br>
     				<button type="button" id="btnComments" class="btn btn-info">댓글 작성</button>

@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WishList {
+	String duplicate;
+
 	String member_no;
 	String moviecd;
 	String title;
@@ -20,6 +22,30 @@ public class WishList {
 		// TODO Auto-generated constructor stub
 	}
 
+	public WishList(String duplicate, String member_no, String moviecd, String title, String director, String actor,
+			String opendt, String runtime, String genre, String plot, String poster, String audiacc) {
+		super();
+		this.duplicate = duplicate;
+		this.member_no = member_no;
+		this.moviecd = moviecd;
+		this.title = title;
+		this.director = director;
+		this.actor = actor;
+		this.opendt = opendt;
+		this.runtime = runtime;
+		this.genre = genre;
+		this.plot = plot;
+		this.poster = poster;
+		this.audiacc = audiacc;
+	}
+
+	public String getDuplicate() {
+		return duplicate;
+	}
+	
+	public void setDuplicate(String duplicate) {
+		this.duplicate = duplicate;
+	}
 	public String getMember_no() {
 		return member_no;
 	}

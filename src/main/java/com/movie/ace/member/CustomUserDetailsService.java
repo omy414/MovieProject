@@ -27,4 +27,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 		return userInfo;
 	}
 	
+	public void updateLoginDate(String username) {
+		memberDAO.updateLoginDate(username);
+	}
+	
+	public void updateLogoutDate(String username) {
+		memberDAO.updateLogoutDate(username);
+	}
+	
 }

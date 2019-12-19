@@ -27,11 +27,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String encPassword = member.getPassword();
 		
 		if(!passwordEncoder.matches(rawPassword, encPassword)) {
-			System.out.println("비밀번호 오류: "+id);
+			//System.out.println("비밀번호 오류: "+id);
 			throw new BadCredentialsException(id);			
 			}
 		if(!member.isEnabled() || !member.isCredentialsNonExpired()) {
-			System.out.println("잠금된 사용자: "+id);
+			//System.out.println("잠금된 사용자: "+id);
 			throw new AuthenticationCredentialsNotFoundException(id);
 		}
 		return new UsernamePasswordAuthenticationToken(id, encPassword, member.getAuthorities());

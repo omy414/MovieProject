@@ -9,4 +9,7 @@ public interface WishListMapper {
 	public void setMovieReply(ModalWrite modalwrite);
 	public List<ModalGetReplys> getMovieReply(ModalGetReplys modalgetreplys);
 	public void delWishList(WishList wishlist);
+	public void insertWishList(WishList wishlist);
+	public List<WishList> getBoxOffice(WishList boxoffice);
+	public int checkBeforeInsert(WishList check);
 }

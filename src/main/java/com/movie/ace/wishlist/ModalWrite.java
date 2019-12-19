@@ -7,14 +7,14 @@ public class ModalWrite {
 	String moviecd;
 	String movie_reply;
 	int member_no;
-	int movie_rate;
+	String movie_rate;
 	
 	public ModalWrite() {
 	
 	}
 	
  
-	public ModalWrite(String moviecd, String movie_reply, int member_no, int movie_rate) {
+	public ModalWrite(String moviecd, String movie_reply, int member_no, String movie_rate) {
 		super();
 		this.moviecd = moviecd;
 		this.movie_reply = movie_reply;
@@ -46,11 +46,11 @@ public class ModalWrite {
 		this.member_no = member_no;
 	}
 
-	public int getMovie_rate() {
+	public String getMovie_rate() {
 		return movie_rate;
 	}
 
-	public void setMovie_rate(int movie_rate) {
+	public void setMovie_rate(String movie_rate) {
 		this.movie_rate = movie_rate;
 	}
 	

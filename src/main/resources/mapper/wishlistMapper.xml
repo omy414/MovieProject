@@ -10,10 +10,20 @@
 	where moviecd IN (
 		select moviecd 
 		from MovieWishList 
-		where member_no = 1 <!--#{member_no}으로 바꾸면 된다. -->
+		where member_no = #{member_no} <!--#{member_no}으로 바꾸면 된다. -->
 		)
 		 
 		
+	</select>
+	
+	<select id="getBoxOffice"
+	parameterType="com.movie.ace.wishlist.WishList"
+	resultType="com.movie.ace.wishlist.WishList">
+	select moviecd,title,director,actor,opendt,runtime,genre,plot,poster,audiacc
+	from MovieDB 
+	where audiacc > 180000 
+	order by opendt desc, audiacc desc 
+	limit 5
 	</select>
 	
 	<delete id="delWishList"
@@ -37,12 +47,22 @@
 	  insert into MovieRate(moviecd,member_no,movie_rate,movie_reply)
 	  values(#{moviecd},#{member_no},#{movie_rate},#{movie_reply})
 	 </insert>
+	 
+	<insert id ="insertWishList"
+	 parameterType="com.movie.ace.wishlist.WishList">
+	 insert into MovieWishList values(#{member_no},#{moviecd})
+	 </insert>
 	  
 	 <select id="getMovieReply"
 	 parameterType="com.movie.ace.wishlist.ModalGetReplys"
 	 resultType="com.movie.ace.wishlist.ModalGetReplys">
 	 select Mem.member_id,Movie.movie_rate,Movie.movie_reply from MovieRate Movie join Member Mem on Movie.member_no = Mem.member_no where Movie.moviecd = #{moviecd}
+	 </select>
 	 
+	 <select id="checkBeforeInsert"
+	 parameterType="com.movie.ace.wishlist.WishList"
+	 resultType="int">
+	 select count(*) from MovieWishList where member_no = #{member_no} and moviecd = #{moviecd}
 	 </select>
 	 
 

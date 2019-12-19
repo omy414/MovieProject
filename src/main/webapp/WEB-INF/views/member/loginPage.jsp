@@ -32,6 +32,7 @@ $(window).on('scroll', function() {
 
 <title>Login</title>
 </head>
+
 <body>
    <div class="modal-content">
 	<div class="modal-header">

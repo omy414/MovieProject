@@ -9,11 +9,29 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <!-- 부가적인 테마 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <%@ include file="/WEB-INF/views/include/header.jsp"%>
 <title>Access Denied</title>
+<script type="text/javascript">
+/*[ Fixed Header ]*/
+var headerDesktop = $('.container-menu-desktop');
+var wrapMenu = $('.wrap-menu-desktop');
+$(headerDesktop).addClass('fix-menu-desktop');
+$(window).on('scroll', function() {
+	if (true) {
+		$(headerDesktop).addClass('fix-menu-desktop');
+		$(wrapMenu).css('top', 0);
+	}
+});
+
+</script>
 </head>
+<%
+	String referer = request.getHeader("REFERER");
+	pageContext.setAttribute("referer", referer);
+%>
 <body>
-      <br><br>
+      <br><br><br><br><br>
       <div class="container text-center">
           <h1>Access Denied</h1><br>
       </div>
@@ -23,7 +41,11 @@
       </div>
       <br><br>
       <div class="container text-center">
-        <a href='<c:url value="/"/>' class="text-dark"><i class="fas fa-undo"></i></a>
+        <a href='<c:url value="${referer }"/>' class="text-dark"><i class="fas fa-undo"></i></a>
       </div>
+      <%-- <br><br>
+      <div class="container text-center">
+        <a href='<c:url value="/"/>' class="text-dark">메인</a>
+      </div> --%>
 </body>
 </html>

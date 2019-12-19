@@ -44,8 +44,11 @@ public class RateDAO {
 		int chk = ss.getMapper(RateMapper.class).checkDb(mcode); //영화코드로 엮여있는 댓글 갯수가 몇갠지 체크한다.
 		return chk;
 	}
-	
 	public void insertMovieDB(RateVO rvo) { //moviedb에 삽입한다. 
 		ss.getMapper(RateMapper.class).insertMovieDB(rvo);
+	}
+	public int checkBeforeInsert(RateVO rvo) {
+		int check = ss.getMapper(RateMapper.class).checkBeforeInsert(rvo);
+		return check;
 	}
 }

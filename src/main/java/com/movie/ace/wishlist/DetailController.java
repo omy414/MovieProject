@@ -37,7 +37,7 @@ public class DetailController {
 
 	@RequestMapping("write")
 	public void modalWrite(@ModelAttribute ModalWrite modalwrite, HttpServletRequest req, HttpServletResponse res) {
-		modalwrite.setMovie_rate(5); // 평점 구현되면 여기도 받아와서, 구현해야한다.
+		//modalwrite.setMovie_rate(5); // 평점 구현되면 여기도 받아와서, 구현해야한다.
 		wishDAO.setMoviereply(modalwrite);
 	}
 

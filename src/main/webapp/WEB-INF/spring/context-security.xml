@@ -25,16 +25,13 @@
             
             <security:logout
             	logout-url="/logout"
-            	invalidate-session="true"
-            	logout-success-url="/"
+            	success-handler-ref="logoutSuccessHandler"
+            	invalidate-session="false"
             />
             
             <security:access-denied-handler error-page="/access_denied_page"/>
             
         </security:http>
-        
-        <!-- 시큐리터 어노테이션 설정 -->
-        <security:global-method-security secured-annotations="enabled"/>
         
        <!--  <jdbc-user-service data-source-ref="dataSource" id="userService"
         	users-by-username-query="select member_id as username, member_password as password, enabled from MEMBER where member_id=?"
@@ -42,9 +39,11 @@
         /> -->
         
         <security:authentication-manager>
+        
         	<security:authentication-provider ref="userAuthProvider"/>
             <security:authentication-provider user-service-ref="userService">
             </security:authentication-provider>
+            
         </security:authentication-manager>
         
         <bean id="userService" class="com.movie.ace.member.CustomUserDetailsService"/>
@@ -57,6 +56,7 @@
         	<property name="loginId" value="id"/>
         	<property name="password" value="password"/>
         	<property name="defaultUrl" value="/"/>
-        </bean>
-   
+        </bean> 
+        <!-- 로그아웃 핸들러 -->
+   		<bean id="logoutSuccessHandler" class="com.movie.ace.member.CustomLogoutSuccessHandler"/>
 </beans>

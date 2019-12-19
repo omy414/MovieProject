@@ -1,5 +1,5 @@
 package com.movie.ace.wishlist;
- 
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,11 +20,9 @@ public class WishListDAO {
 	@Autowired
 	WishList wishlist;
 
-	int size;
+	public void getWishList(HttpServletRequest req, HttpServletResponse res, int member_num) {
 
-	public void getWishList(HttpServletRequest req, HttpServletResponse res) {
-
-		String member_no = (String) req.getSession().getAttribute("member_no");
+		String member_no = String.valueOf(member_num);
 		wishlist.setMember_no(member_no);
 
 		List<WishList> wishlist_return = new LinkedList<WishList>();
@@ -40,7 +38,9 @@ public class WishListDAO {
 		// member_no 꺼내려고 쓴거다.
 		if (wishlist_return.size() != 0) {
 			wishlist = wishlist_return.get(0);
-			size = wishlist_return.size();
+			req.getSession().setAttribute("wishlist", wishlist_return);
+			req.getSession().setAttribute("member_num", wishlist.getMember_no());
+		} else {
 			req.getSession().setAttribute("wishlist", wishlist_return);
 			req.getSession().setAttribute("member_num", wishlist.getMember_no());
 		}
@@ -66,4 +66,14 @@ public class WishListDAO {
 		ss.getMapper(WishListMapper.class).delWishList(modify);
 	}
 
+	public void insertWishList(WishList modify) {
+		ss.getMapper(WishListMapper.class).insertWishList(modify);
+	}
+
+	public int checkBeforeInsert(WishList movie) {
+		int duplicate;
+		duplicate = ss.getMapper(WishListMapper.class).checkBeforeInsert(movie);
+		System.out.println(duplicate+"%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+		return duplicate;
+	}
 }

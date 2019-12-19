@@ -7,14 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.movie.ace.search.SearchVO;
 
 @RestController
+@ResponseBody
 @RequestMapping("/rate/*")
 public class RateController {
 		
@@ -22,7 +25,7 @@ public class RateController {
 	private RateDAO rDAO;
 	
 	@RequestMapping(value = "setReply", method = RequestMethod.POST) 
-	public void rateWrite(@ModelAttribute RateVO rateVO, HttpServletRequest req, HttpServletResponse res) {
+	public int rateWrite(@ModelAttribute RateVO rateVO, HttpServletRequest req, HttpServletResponse res) {
 		//modalwrite.setMovie_rate(5); // 평점 구현되면 여기도 받아와서, 구현해야한다.
 		
 		String mcode = req.getParameter("moviecd");
@@ -32,7 +35,12 @@ public class RateController {
 			//moviedb에 영화코드가 있는경우
 			rateVO.setMovie_reply(req.getParameter("movie_reply")); //req에서 댓글 가져와서 setting
 			rateVO.setMoviecd(code); //movie code setting
-			rDAO.writeReply(rateVO, req, res); //댓글 작성
+			if(rDAO.checkBeforeInsert(rateVO) == 0) {
+				rDAO.writeReply(rateVO, req, res); //댓글 작성
+			return 1; 
+			}
+			System.out.println("여기를 들어와야 내가 의도한 대로 된다@#)(*#@()*#@()*#)(@*#)@)(#)");
+			return -1;
 		}
 		else {
 			//moviedb에 영화코드가 없는경우
@@ -42,6 +50,7 @@ public class RateController {
 			rateVO.setMovie_reply(req.getParameter("movie_reply"));
 			rateVO.setMoviecd(code);
 			rDAO.writeReply(rateVO, req, res);
+			return 1;
 		}				
 		
 	}

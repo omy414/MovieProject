@@ -10,5 +10,5 @@ public interface RateMapper {
 	public abstract int getReplyCount(int mcode);	
 	public abstract int checkDb(int mcode);
 	public abstract void insertMovieDB(RateVO rVO);
-
+	public int checkBeforeInsert(RateVO rVO);
 }
