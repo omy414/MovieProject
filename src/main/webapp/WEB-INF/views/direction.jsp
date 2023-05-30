@@ -16,6 +16,7 @@
 .nav_main {
   color: crimson;
   font-size: 20px;
+  
 }
 
 a:hover {
